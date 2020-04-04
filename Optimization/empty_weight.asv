@@ -1,6 +1,6 @@
 %  Aircraft Empty Weight Calculator
 %  ------------------------------------------------------------------------
-%  Input : Aircraft structure datatpye.
+%  Input : Aircraft structure datatpye
 %  Output : Aircraft sturcture datatype with updated Empty Weight.
 %  All the equations are taken from Commercial Airplane
 %  Design Principles. Chapter No. 8. 
@@ -78,7 +78,7 @@ function [Aircraft] = empty_weight(Aircraft)
 %%% Formula taken from Commercial Airplane Design Principles
 %%% Equation number 8.13 & 8.14; Pg. No. 312 & 313
     function W_t = Tail_Weight(Aircraft)
-        
+    
         T_ff = 0.85;    % Tail Fudge Factor (From Raymer)
         
         W_h = 0.00563*Aircraft.Weight.MTOW^0.6*Aircraft.Tail.Horizontal.S^0.469 ...
@@ -93,7 +93,7 @@ function [Aircraft] = empty_weight(Aircraft)
         W_t = W_h + W_v;
         
         W_t = W_t * T_ff;
-        
+      
     end
 %%  Function for calculating Propulsion Group + Nacelle Weight
 %%% It includes Engine Weight + it's associated components like
