@@ -13,7 +13,7 @@ function [P, rho, T, a] = ISA(altitude_meters)
     g = 9.81;   %  Acceleration due to Gravity (g)
     %%% If conditions for Altitude Specific Calculation
     %%% Calculation for Troposhpere limit : Sealevel to 11,000 meters.
-    if altitude_meters <= 11000
+    if altitude_meters <= 11000 && altitude_meters >= 0
         rate = -0.0065; % Lapse Rate
         T = T_SL + rate*altitude_meters; % T@Given_Altitude
         P = P_SL*((T/T_SL)^(-g/(R*rate))); % P@Given_Altitude
@@ -69,6 +69,7 @@ function [P, rho, T, a] = ISA(altitude_meters)
         a = sqrt(1.4*287*T); % a@Given_Altitude
     else
         disp('Altitude input is outside the range.');
+        return
     end
     
 return
