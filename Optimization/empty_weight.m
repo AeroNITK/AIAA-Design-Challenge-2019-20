@@ -9,6 +9,9 @@
 
 function [Aircraft] = Empty_Weight(Aircraft)
 
+    d2r = pi/180;
+    %in2ft = 1/12;
+
     W_wing = Wing_Weight(Aircraft);
     W_fuselage = Fuselage_Weight(Aircraft);
     W_LG = Landing_Gear_Weight(Aircraft);
@@ -33,12 +36,11 @@ function [Aircraft] = Empty_Weight(Aircraft)
     function W_wg = Wing_Weight(Aircraft)
     
         Kwg = 0.475;
-        Sweep_hc = ;
         W_ff = 0.89;    % Wing Fudge Factor (From Raymer)    
         
-        W_wg = Kwg*Aircraft.Wing.S^0.7*Aircraft.Wing.A^0.47 ...
-            *(Aircraft.Weight.MTOW*Aircraft.Vndiagram.n_ult/1000)^0.52 ...
-            *(0.3 + 0.7/cos(d2r*Sweep_hc)) ...
+        W_wg = Kwg*Aircraft.Wing.S^0.7*Aircraft.Wing.Aspect_Ratio^0.47 ...
+            *(Aircraft.Weight.MTOW * Aircraft.Vndiagram.n_ult/1000)^0.52 ...
+            *(0.3 + 0.7/cos(d2r*Aircraft.Wing.Sweep_hc)) ...
             *((1 + Aircraft.Wing.taper_ratio)/Aircraft.Wing.t_c_root)^0.4;
         
         W_wg = W_ff * W_wg;
@@ -166,6 +168,15 @@ function [Aircraft] = Empty_Weight(Aircraft)
       
     end
 %%  Function for calculating Equipment & Furnishing Group Weight
+%%% Formula taken from Commercial Airplane Design Principles
+%%% Equation number 8.; Pg. No. 
+
+    function W_efg = Equip_Furnish_group_Weight(Aircraft)
+        
+        W_efg = 0.4*Aircraft.Weight.MTOW^0.85 + 0.001*Aircraft.Weight.MTOW;
+      
+    end
+%%  Function for calculating AC and Anti-icing group Group Weight
 %%% Formula taken from Commercial Airplane Design Principles
 %%% Equation number 8.42; Pg. No. 332
 
