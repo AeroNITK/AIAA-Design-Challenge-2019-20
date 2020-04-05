@@ -38,6 +38,7 @@ function [Aircraft] = Fuel_Weight(Aircraft)
     % Mission Segement Weight Fraction for Cruise
     
     range = Aircraft.Performance.range*1.852*1000;  % nm to meters
+    
     [~,~,~,a] = ISA(Aircraft.Performance.Altitude_cruise*0.3048);
     V = Aircraft.Performance.M_cruise*a;    % Cruising Speed in m/s
     Cj_cruise = 0.000153;   % Specific Fuel Consumption (in lbs/lbs/s)
@@ -48,22 +49,17 @@ function [Aircraft] = Fuel_Weight(Aircraft)
     
     W6byW5 = ;
     
-    W7byW6 = 0.99;  % Mission Segement Weight Fraction for Descent 
-    W8byW7 = 0.98;  % Mission Segement Weight Fraction for Climb
+    W7byW6 = 0.99;  % Mission Segement Weight Fraction for Descent
     
+    W8byW7 = 0.98; 
     W9byW8 = ;
     
-    W10byW9 = 0.99; % Mission Segement Weight Fraction for Descent
-    
-    W11byW10 = ;    
-    
-    W12byW11 = 0.992;   % Mission Segement Weight Fraction for  Landing
+    W10byW9 = 0.99;
+    W11byW10 = ;
+    W12byW11 = 0.992;
     
     W12byW_TO = W1byW_TO*W2byW1*W3byW2*W4byW3*W5byW4*W6byW5...
-               *W7byW6*W8byW7*W10byW9*W11byW10*W12byW11; 
+               *W7byW6*W8byW7*W10byW9*W11byW10*W12byW11;
            
-    WfbyW_TO = 1.06*(1 - W12byW_TO);    % Fuel to MTOW ratio
-    
-    Aircraft.Weight.fuel_Weight = WfbyW_TO * Aircraft.Weight.MTOW;  % Fuel Weight
-    
+    WfbyW_TO = 1.06*(1 - W12byW_TO);       
 end

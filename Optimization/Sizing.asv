@@ -23,7 +23,7 @@ function Aircraft = Sizing(Aircraft)
     function Aircraft = Wing_Sizing(Aircraft)
         
         Aircraft.Wing.Aspect_Ratio = 9;
-        Aircraft.Wing.S = Aircraft.Weight.MTOW/Aircraft.Performance.WbyS;
+        Aircraft.Wing.S = Aircraft.;
         Aircraft.Wing.b = sqrt(Aircraft.Wing.Aspect_Ratio*Aircraft.Wing.S);
         Aircraft.Wing.taper_ratio = 0.3;
         Aircraft.Wing.Sweep_qc = 35;
@@ -129,8 +129,6 @@ function Aircraft = Sizing(Aircraft)
 
     %% Propulsion Sizing
     function Aircraft = Prop_Sizing(Aircraft)
-        Aircraft.Propulsion.thrust = Aircraft.Weight.MTOW*Aircraft.Performance.TbyW;
         Aircraft.Propulsion.no_of_engines = 2;
-        Aircraft.Propulsion.thrust_per_engine = Aircraft.Propulsion.thrust/Aircraft.Propulsion.no_of_engines;
     end
 end

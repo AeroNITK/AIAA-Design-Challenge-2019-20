@@ -7,7 +7,7 @@
 %  All units are in FPS System.
 %  ------------------------------------------------------------------------
 
-function [Aircraft] = empty_weight(Aircraft)
+function [Aircraft] = Empty_Weight(Aircraft)
 
     W_wing = Wing_Weight(Aircraft);
     W_fuselage = Fuselage_Weight(Aircraft);
@@ -104,9 +104,9 @@ function [Aircraft] = empty_weight(Aircraft)
         
         N_ff = 0.95;% Nacelle Fudge Factor (From Raymer); 
         
-        W_e = 2.7*thrust_takeoff^0.75;
+        W_e = 2.7*Aircraft.Propulsion.thrust_per_engine^0.75; % Take-Off thrust/engine
         
-        W_pg_ng = 4.5*(Aircraft.Engine.no_of_engines*W_e)^0.9;
+        W_pg_ng = 4.5*(Aircraft.Propulsion.no_of_engines*W_e)^0.9;
         
         W_pg_ng = W_pg_ng*N_ff;
       
