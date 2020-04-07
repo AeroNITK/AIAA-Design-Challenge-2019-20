@@ -64,14 +64,12 @@ function [Aircraft] = Empty_Weight(Aircraft)
     end
 %%  Function for calculating Landing Gear Weight
 %%% Formula taken from Commercial Airplane Design Principles
-%%% Equation number 8.9; Pg. No. 311
+%%% Equation number 8.10; Pg. No. 311
     function W_lg = Landing_Gear_Weight(Aircraft)
     
         LG_ff = 0.98;    % Landing Gear Fudge Factor (From Raymer)
         
-        W_lg = 60 + 0.26*Aircraft.Weight.MTOW^0.75 ...
-            + 0.19*Aircraft.Weight.MTOW ...
-            + 1.7e-5*Aircraft.Weight.MTOW^1.5;
+        W_lg = 0.00891*Aircraft.Weight.MTOW^1.12;
         
         W_lg = W_lg * LG_ff;
       
