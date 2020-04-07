@@ -34,15 +34,15 @@ function [c,ceq] = Nonlincon(x)
     c(3) = 2*(L_by_D^(-1) + CGR)  - x(1)/Thrust_Factor; % Climb Requirement
     
     %%% Cruising Altitude / Speed
-    M = Aircraft.Performance.M_cruise;
-    Cruising_Altitude = Aircraft.Performance.altitude_cruise1; %in feets
-    [~,rho,~,a] = ISA(Cruising_Altitude*0.3048);
-    V = M*a/0.3048;
-    rho = rho*1.94e-3;
-    q = 0.5*rho*V^2;
-    alpha = 0.324;
-    K = 2*q*0.016/alpha;
-    c(4) = K - x(1)*x(2);
+%     M = Aircraft.Performance.M_cruise;
+%     Cruising_Altitude = Aircraft.Performance.altitude_cruise1; %in feets
+%     [~,rho,~,a] = ISA(Cruising_Altitude*0.3048);
+%     V = M*a/0.3048;
+%     rho = rho*1.94e-3;
+%     q = 0.5*rho*V^2;
+%     alpha = 0.324;
+%     K = 2*q*0.016/alpha;
+%     c(4) = K - x(1)*x(2);
     
     %%% Equality Constrain
     ceq = [];

@@ -22,7 +22,7 @@ function Aircraft = Sizing(Aircraft)
     %% Wing Sizing
     function Aircraft = Wing_Sizing(Aircraft)
         
-        Aircraft.Wing.Aspect_Ratio = 9;
+        Aircraft.Wing.Aspect_Ratio = 8;
         Aircraft.Wing.S = Aircraft.Weight.MTOW/Aircraft.Performance.WbyS;
         Aircraft.Wing.b = sqrt(Aircraft.Wing.Aspect_Ratio*Aircraft.Wing.S);
         Aircraft.Wing.taper_ratio = 0.3;
