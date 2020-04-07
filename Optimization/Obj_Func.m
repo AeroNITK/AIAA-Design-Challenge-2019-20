@@ -6,9 +6,9 @@ function value = Obj_Func(x)
     Aircraft.Performance.WbyS = x(2);   % Independent variable 1
     Aircraft.Performance.TbyW = x(1);   % Independent variable 2
     
-    Aircraft.Weight.MTOW = 400000;  % Initial Guess
+    Aircraft.Weight.MTOW = 350000;  % Initial Guess
     error = 1; % Dummy value to start the while loop
-
+    
     while error > 0.005
     
         error = Aircraft.Weight.MTOW;
