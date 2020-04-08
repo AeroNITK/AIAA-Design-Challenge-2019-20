@@ -22,11 +22,11 @@ function Aircraft = Sizing(Aircraft)
     %% Wing Sizing
     function Aircraft = Wing_Sizing(Aircraft)
         
-        Aircraft.Wing.Aspect_Ratio = 8;
-        Aircraft.Wing.S = Aircraft.Weight.MTOW/Aircraft.Performance.WbyS;
-        Aircraft.Wing.b = sqrt(Aircraft.Wing.Aspect_Ratio*Aircraft.Wing.S);
-        Aircraft.Wing.taper_ratio = 0.3;
-        Aircraft.Wing.Sweep_qc = 35;
+%         Aircraft.Wing.Aspect_Ratio = 9;
+%         Aircraft.Wing.S = Aircraft.Weight.MTOW/Aircraft.Performance.WbyS;
+%         Aircraft.Wing.b = sqrt(Aircraft.Wing.Aspect_Ratio*Aircraft.Wing.S);
+%         Aircraft.Wing.taper_ratio = 0.2;
+%         Aircraft.Wing.Sweep_qc = 30;
         Aircraft.Wing.chord_root = 2*Aircraft.Wing.S/(Aircraft.Wing.b*(1 + Aircraft.Wing.taper_ratio));
         Aircraft.Wing.Sweep_LE = atan(tan(Aircraft.Wing.Sweep_qc*d2r) - (Aircraft.Wing.chord_root...
                             *(Aircraft.Wing.taper_ratio - 1))/2/Aircraft.Wing.b)/d2r;
@@ -41,7 +41,7 @@ function Aircraft = Sizing(Aircraft)
 
         Aircraft.Wing.Dihedral = 3;
         Aircraft.Wing.incidence = 1;
-        Aircraft.Wing.t_c_root = 0.15;
+%         Aircraft.Wing.t_c_root = 0.15;
         
     end
 
@@ -136,4 +136,5 @@ function Aircraft = Sizing(Aircraft)
         Aircraft.Propulsion.no_of_engines = 2;
         Aircraft.Propulsion.thrust_per_engine = Aircraft.Propulsion.thrust/Aircraft.Propulsion.no_of_engines;
     end
+
 end

@@ -7,10 +7,18 @@ close all
 global Aircraft
 Aircraft = struct();
 
-LB = [0.1,50];  % Lower Bound
-UB = [0.6,160]; % Upper Bound
+% Variables involved in Optimization
+% x(1) = Surface Area
+% x(2) = Aspect Ratio
+% x(3) = Taper Ratio
+% x(4) = QC Sweep
+% x(5) = t/c
+% x(6) = T/W
 
-x0 = [0.3,140]; % Starting Value
+LB = [3000,7,0.2,25,0.11,0.15];  % Lower Bound
+UB = [4000,10,0.3,35,0.15,0.35]; % Upper Bound
+
+x0 = [3500,8.5,0.25,30,0.13,0.25]; % Starting Value
 
 A = [];
 B = [];
@@ -20,18 +28,12 @@ Beq = [];
 options = optimoptions('fmincon','Algorithm','sqp','Display','iter-detailed',...
     'FunctionTolerance',1e-10,'OptimalityTolerance',1e-10,'ConstraintTolerance',1e-10,....
     'StepTolerance',1e-10,'MaxFunctionEvaluations',500);
- 
-X = fmincon(@(x) Obj_Func(x), x0, A, B, Aeq, Beq, LB, UB, @(x) Nonlincon(x),options);
+
+X = fmincon(@(x) Obj_Func_TS(x), x0, A, B, Aeq, Beq, LB, UB, @(x) Nonlincon_TS(x),options);
 
 %% Plotting
  x1 = 0.1:0.005:0.6; % T/W
  x2 = 50:1.1:160;    % Wing loading
-% [X1,X2] = meshgrid(x1,x2);
-% 
-% cost = X1./X2;
-% 
-% figure(2)
-% contour(X2,X1,cost,20);
 
 R = 287;
 S_TOFL = Aircraft.Performance.takeoff_runway_length; % Take-off field length in feets
@@ -80,6 +82,6 @@ y = K./x;
 
 plot(x,y,'LineWidth',1.5);
 
-plot(X(2),X(1),'o');
+plot(Aircraft.Performance.WbyS,Aircraft.Performance.TbyW,'o');
 
 hold off
