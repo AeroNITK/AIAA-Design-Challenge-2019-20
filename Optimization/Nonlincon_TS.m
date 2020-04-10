@@ -46,7 +46,7 @@ function [c,ceq] = Nonlincon_TS(x)
     c(4) = K - Aircraft.Performance.TbyW*Aircraft.Performance.WbyS;
     
     %%% Equality Constrain
-    ceq(1) = 0.95/cos(d2r*Aircraft.Wing.Sweep_LE) - x(5)/cos(d2r*Aircraft.Wing.Sweep_LE)^2 ...
-            -0.5/(10*cos(d2r*Aircraft.Wing.Sweep_LE)^3) - 0.82;
+    ceq(1) = 0.95/cos(d2r*Aircraft.Wing.Sweep_LE) - x(5)/(cos(d2r*Aircraft.Wing.Sweep_LE)^2) ...
+            -0.5/(10*cos(d2r*Aircraft.Wing.Sweep_LE)^3) - (Aircraft.Performance.M_cruise + 0.05386);
     
 end

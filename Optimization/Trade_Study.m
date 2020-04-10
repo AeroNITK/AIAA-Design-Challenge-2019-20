@@ -6,6 +6,7 @@ close all
 
 global Aircraft
 Aircraft = struct();
+d2r = pi/180;
 
 % Variables involved in Optimization
 % x(1) = Surface Area
@@ -14,11 +15,13 @@ Aircraft = struct();
 % x(4) = QC Sweep
 % x(5) = t/c
 % x(6) = T/W
+% x(7) = M
+% x(8) = Altitude
 
-LB = [3000,7,0.2,25,0.11,0.15];  % Lower Bound
-UB = [4000,10,0.3,35,0.15,0.35]; % Upper Bound
+LB = [2500,7,0.2,25,0.11,0.15,0.8,30000];  % Lower Bound
+UB = [3000,10,0.3,35,0.15,0.35,0.85,45000]; % Upper Bound
 
-x0 = [3500,8.5,0.25,30,0.13,0.25]; % Starting Value
+x0 = [3500,8.5,0.25,30,0.13,0.25,0.81,35000]; % Starting Value
 
 A = [];
 B = [];
@@ -31,9 +34,14 @@ options = optimoptions('fmincon','Algorithm','sqp','Display','iter-detailed',...
 
 X = fmincon(@(x) Obj_Func_TS(x), x0, A, B, Aeq, Beq, LB, UB, @(x) Nonlincon_TS(x),options);
 
+Aircraft.Performance.Mdd = 0.95/cos(d2r*Aircraft.Wing.Sweep_LE) - Aircraft.Wing.t_c_root/cos(d2r*Aircraft.Wing.Sweep_LE)^2 ...
+            -0.5/(10*cos(d2r*Aircraft.Wing.Sweep_LE)^3);    % Drag Divergence Mach Number
+        
+Aircraft.Performance.Mcr = Aircraft.Performance.Mdd - (0.1/80)^(0.33);
+
 %% Plotting
- x1 = 0.1:0.005:0.6; % T/W
- x2 = 50:1.1:160;    % Wing loading
+x1 = 0.1:0.005:0.6; % T/W
+x2 = 50:1.1:160;    % Wing loading
 
 R = 287;
 S_TOFL = Aircraft.Performance.takeoff_runway_length; % Take-off field length in feets

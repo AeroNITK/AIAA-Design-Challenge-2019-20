@@ -9,6 +9,8 @@ function value = Obj_Func_TS(x)
     Aircraft.Wing.Sweep_qc = x(4);
     Aircraft.Wing.t_c_root = x(5);
     Aircraft.Performance.TbyW = x(6);
+    Aircraft.Performance.M_cruise = x(7);
+    Aircraft.Performance.altitude_cruise1 = x(8);
     
     Aircraft.Weight.MTOW = 350000;  % Initial Guess
     
