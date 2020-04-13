@@ -7,10 +7,10 @@ close all
 global Aircraft
 Aircraft = struct();
 
-LB = [0.1,50];  % Lower Bound
-UB = [0.6,160]; % Upper Bound
+LB = [0.1,75,25,0.11,0.7,30000,0.2,7,150];  % Lower Bound
+UB = [0.6,160,35,0.15,0.9,40000,0.3,10,200]; % Upper Bound
 
-x0 = [0.3,140]; % Starting Value
+x0 = [0.3,140,27,0.13,0.85,36000,0.29,9,175]; % Starting Value
 
 A = [];
 B = [];
@@ -18,10 +18,10 @@ Aeq = [];
 Beq = [];
 
 options = optimoptions('fmincon','Algorithm','sqp','Display','iter-detailed',...
-    'FunctionTolerance',1e-10,'OptimalityTolerance',1e-10,'ConstraintTolerance',1e-10,....
-    'StepTolerance',1e-10,'MaxFunctionEvaluations',500);
+    'FunctionTolerance',1e-6,'OptimalityTolerance',1e-6,'ConstraintTolerance',1e-6,....
+    'StepTolerance',1e-6,'MaxFunctionEvaluations',500);
  
-X = fmincon(@(x) Obj_Func(x), x0, A, B, Aeq, Beq, LB, UB, @(x) Nonlincon(x),options);
+[X,~,exitflag] = fmincon(@(x) Obj_Func(x), x0, A, B, Aeq, Beq, LB, UB, @(x) Nonlincon(x),options);
 
 %% Plotting
  x1 = 0.1:0.005:0.6; % T/W

@@ -25,13 +25,9 @@
 %  ------------------------------------------------------------------------
 
 function [Aircraft] = Fuel_Weight(Aircraft)
-
-    K = 1/(pi*Aircraft.Wing.Aspect_Ratio*Aircraft.Aero.e_clean);
-    LbyD_max = 1/(2*sqrt(Aircraft.Aero.C_D0_clean*K));
-    LbyD_max_cruise = 0.866*LbyD_max;
     
-    Cj_cruise = 0.000153;   % Specific Fuel Consumption (in lbs/lbs/s)
-    Cj_loiter = 0.000125;   % Specific Fuel Consumption (in lbs/lbs/s)
+    Cj_cruise = 0.000139;   % Specific Fuel Consumption (in lbs/lbs/s)
+    Cj_loiter = 0.000111;   % Specific Fuel Consumption (in lbs/lbs/s)
 
     W1byW_TO = 0.99;    % Mission Segement Weight Fraction for Engine Start & Warm Up     
     W2byW1 = 0.99;      % Mission Segement Weight Fraction for Taxi to Runway
@@ -44,13 +40,13 @@ function [Aircraft] = Fuel_Weight(Aircraft)
     [~,~,~,a] = ISA(Aircraft.Performance.altitude_cruise1*0.3048);
     V = Aircraft.Performance.M_cruise*a;    % Cruising Speed in m/s
     
-    W5byW4 = exp(-(range*Cj_cruise)/(V*LbyD_max_cruise));
+    W5byW4 = exp(-(range*Cj_cruise)/(V*Aircraft.Aero.LbyD_max_cruise));
     
     % Mission Segement Weight Fraction for Loiter segment 1
     
     loiter1 = 0.1*range/V;  % 10% of the cruising time
     
-    W6byW5 = exp(-(loiter1*Cj_loiter)/(LbyD_max));
+    W6byW5 = exp(-(loiter1*Cj_loiter)/(Aircraft.Aero.LbyD_max_loiter));
     
     W7byW6 = 0.99;  % Mission Segement Weight Fraction for Descent 
     W8byW7 = 0.98;  % Mission Segement Weight Fraction for Climb
@@ -61,13 +57,13 @@ function [Aircraft] = Fuel_Weight(Aircraft)
     [~,~,~,a] = ISA(Aircraft.Performance.altitude_cruise2*0.3048);
     V = Aircraft.Performance.M_cruise*a;    % Cruising Speed in m/s
     
-    W9byW8 = exp(-(range*Cj_cruise)/(V*LbyD_max_cruise));
+    W9byW8 = exp(-(range*Cj_cruise)/(V*Aircraft.Aero.LbyD_max_cruise));
     
     W10byW9 = 0.99; % Mission Segement Weight Fraction for Descent
     
     % Mission Segement Weight Fraction for Loiter segment 2
     
-    W11byW10 = exp(-(Aircraft.Performance.loiter2*Cj_loiter)/(LbyD_max));    
+    W11byW10 = exp(-(Aircraft.Performance.loiter2*Cj_loiter)/(Aircraft.Aero.LbyD_max_loiter));    
     
     W12byW11 = 0.992;   % Mission Segement Weight Fraction for  Landing
     

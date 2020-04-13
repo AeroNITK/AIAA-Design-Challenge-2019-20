@@ -1,7 +1,8 @@
 function [c,ceq] = Nonlincon(x)
 
     global Aircraft
-
+    d2r = pi/180;
+    
     %%% Take-Off
     R = 287;
     S_TOFL = Aircraft.Performance.takeoff_runway_length; % Take-off field length in feets
@@ -45,6 +46,8 @@ function [c,ceq] = Nonlincon(x)
     c(4) = K - x(1)*x(2);
     
     %%% Equality Constrain
-    ceq = [];
-    
+%     ceq = [];
+        ceq = (Aircraft.Performance.M_cruise + 0.04) - 0.95/cos(d2r*Aircraft.Wing.Sweep_LE) ...
+            + Aircraft.Wing.t_c_root/(cos(d2r*Aircraft.Wing.Sweep_LE)^2) ...
+             + 0.5/(10*cos(d2r*Aircraft.Wing.Sweep_LE)^3);
 end

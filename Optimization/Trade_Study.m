@@ -18,10 +18,10 @@ d2r = pi/180;
 % x(7) = M
 % x(8) = Altitude
 
-LB = [2500,7,0.2,25,0.11,0.15,0.8,30000];  % Lower Bound
-UB = [3000,10,0.3,35,0.15,0.35,0.85,45000]; % Upper Bound
+LB = [7,0.2,25,0.11,0.15,75,0.8,30000];%,7,0.2,25,0.11,0.15,0.8,30000];  % Lower Bound
+UB = [10,0.3,35,0.15,0.3,150,0.85,40000];%,10,0.3,35,0.15,0.25,0.85,45000]; % Upper Bound
 
-x0 = [3500,8.5,0.25,30,0.13,0.25,0.81,35000]; % Starting Value
+x0 = [9,0.25,30,0.13,0.22,125,0.82,35000];%,8.5,0.25,30,0.13,0.20,0.81,35000]; % Starting Value
 
 A = [];
 B = [];
@@ -29,10 +29,10 @@ Aeq = [];
 Beq = [];
 
 options = optimoptions('fmincon','Algorithm','sqp','Display','iter-detailed',...
-    'FunctionTolerance',1e-10,'OptimalityTolerance',1e-10,'ConstraintTolerance',1e-10,....
-    'StepTolerance',1e-10,'MaxFunctionEvaluations',500);
+    'FunctionTolerance',1e-6,'OptimalityTolerance',1e-6,'ConstraintTolerance',1e-6,....
+    'StepTolerance',1e-08,'MaxFunctionEvaluations',800);
 
-X = fmincon(@(x) Obj_Func_TS(x), x0, A, B, Aeq, Beq, LB, UB, @(x) Nonlincon_TS(x),options);
+[X, ~, exitflag] = fmincon(@(x) Obj_Func_TS(x), x0, A, B, Aeq, Beq, LB, UB, @(x) Nonlincon_TS(x),options);
 
 Aircraft.Performance.Mdd = 0.95/cos(d2r*Aircraft.Wing.Sweep_LE) - Aircraft.Wing.t_c_root/cos(d2r*Aircraft.Wing.Sweep_LE)^2 ...
             -0.5/(10*cos(d2r*Aircraft.Wing.Sweep_LE)^3);    % Drag Divergence Mach Number
