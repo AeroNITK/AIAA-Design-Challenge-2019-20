@@ -2,27 +2,26 @@ function value = Obj_Func_TS(x)
     
     global Aircraft
     
-    Aircraft.Wing.S = x(1);
-    Aircraft.Wing.Aspect_Ratio = x(2);
-    Aircraft.Wing.b = sqrt(Aircraft.Wing.Aspect_Ratio*Aircraft.Wing.S);
-    Aircraft.Wing.taper_ratio = x(3);
-    Aircraft.Wing.Sweep_qc = x(4);
-    Aircraft.Wing.t_c_root = x(5);
-    Aircraft.Performance.TbyW = x(6);
+%    Aircraft.Wing.S = x(1);
+    Aircraft.Wing.Aspect_Ratio = x(1);
+    Aircraft.Wing.taper_ratio = x(2);
+    Aircraft.Wing.Sweep_qc = x(3);
+    Aircraft.Wing.t_c_root = x(4);
+    Aircraft.Performance.TbyW = x(5);
+    Aircraft.Performance.WbyS = x(6);
     Aircraft.Performance.M_cruise = x(7);
     Aircraft.Performance.altitude_cruise1 = x(8);
     
-    Aircraft.Weight.MTOW = 350000;  % Initial Guess
+    Aircraft.Weight.MTOW = 400000;  % Initial Guess
     
     Aircraft = Performance(Aircraft);
-    
-    Aircraft.Performance.WbyS = Aircraft.Weight.MTOW/Aircraft.Wing.S;
     
     error = 1; % Dummy value to start the while loop
     
     while error > 0.005
     
         error = Aircraft.Weight.MTOW;
+        %Aircraft.Wing.b = sqrt(Aircraft.Wing.Aspect_Ratio*Aircraft.Wing.S);
         Aircraft = Sizing(Aircraft);
         Aircraft = Aero(Aircraft);
 
@@ -35,6 +34,8 @@ function value = Obj_Func_TS(x)
         error = abs(error - Aircraft.Weight.MTOW);
     
     end
+    
+    %Aircraft.Performance.WbyS = Aircraft.Weight.MTOW/Aircraft.Wing.S;
     
     value = Aircraft.Weight.MTOW;
 

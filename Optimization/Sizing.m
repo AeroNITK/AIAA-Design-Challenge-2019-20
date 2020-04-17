@@ -22,10 +22,10 @@ function Aircraft = Sizing(Aircraft)
     %% Wing Sizing
     function Aircraft = Wing_Sizing(Aircraft)
         
-%         Aircraft.Wing.Aspect_Ratio = 9;
-%         Aircraft.Wing.S = Aircraft.Weight.MTOW/Aircraft.Performance.WbyS;
+%        Aircraft.Wing.Aspect_Ratio = 9;
+        Aircraft.Wing.S = Aircraft.Wing.b^2/Aircraft.Wing.Aspect_Ratio;
 %         Aircraft.Wing.b = sqrt(Aircraft.Wing.Aspect_Ratio*Aircraft.Wing.S);
-%         Aircraft.Wing.taper_ratio = 0.2;
+%         Aircraft.Wing.taper_ratio = 0.3;
 %         Aircraft.Wing.Sweep_qc = 30;
         Aircraft.Wing.chord_root = 2*Aircraft.Wing.S/(Aircraft.Wing.b*(1 + Aircraft.Wing.taper_ratio));
         Aircraft.Wing.Sweep_LE = atan(tan(Aircraft.Wing.Sweep_qc*d2r) - (Aircraft.Wing.chord_root...
@@ -120,7 +120,7 @@ function Aircraft = Sizing(Aircraft)
 
         Aircraft.Tail.Vertical.t_c = 0.15;    % NACA 0015
         
-        Aircraft.Tail.Vertical.height = 38.68; % Assumed to be constant
+        Aircraft.Tail.Vertical.height = 6.6187 + Aircraft.Tail.Vertical.b; % Assumed to be constant
     
     end
 
