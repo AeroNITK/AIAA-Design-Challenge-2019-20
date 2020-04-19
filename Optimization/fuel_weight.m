@@ -26,13 +26,13 @@
 
 function [Aircraft] = Fuel_Weight(Aircraft)
     
-    Cj_cruise = 0.000139;   % Specific Fuel Consumption (in lbs/lbs/s)
-    Cj_loiter = 0.000111;   % Specific Fuel Consumption (in lbs/lbs/s)
+    Cj_cruise = 0.000125;   % Specific Fuel Consumption (in lbs/lbs/s)
+    Cj_loiter = 0.0001;   % Specific Fuel Consumption (in lbs/lbs/s)
 
     W1byW_TO = 0.99;    % Mission Segement Weight Fraction for Engine Start & Warm Up     
     W2byW1 = 0.99;      % Mission Segement Weight Fraction for Taxi to Runway
     W3byW2 = 0.995;     % Mission Segement Weight Fraction for Take Off
-    W4byW3 = 0.98;      % Mission Segement Weight Fraction for Climb to cruise altitude
+    W4byW3 = 0.985;      % Mission Segement Weight Fraction for Climb to cruise altitude (Raymer)
     
     % Mission Segement Weight Fraction for Cruise segment 1
     
@@ -65,10 +65,13 @@ function [Aircraft] = Fuel_Weight(Aircraft)
     
     W11byW10 = exp(-(Aircraft.Performance.loiter2*Cj_loiter)/(Aircraft.Aero.LbyD_max_loiter));    
     
-    W12byW11 = 0.992;   % Mission Segement Weight Fraction for  Landing
+    W12byW11 = 0.995;   % Mission Segement Weight Fraction for  Landing (Raymer)
     
     W12byW_TO = W1byW_TO*W2byW1*W3byW2*W4byW3*W5byW4*W6byW5...
                *W7byW6*W8byW7*W9byW8*W10byW9*W11byW10*W12byW11; 
+           
+    Aircraft.Weight.Landing_Takeoff = W1byW_TO*W2byW1*W3byW2*W4byW3*W5byW4*W6byW5...
+               *W7byW6;
            
     Aircraft.Weight.WfbyW_TO = 1.06*(1 - W12byW_TO);    % Fuel to MTOW ratio
     

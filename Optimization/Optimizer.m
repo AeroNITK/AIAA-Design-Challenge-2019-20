@@ -7,10 +7,10 @@ close all
 global Aircraft
 Aircraft = struct();
 
-LB = [0.1,75,25,0.11,0.7,30000,0.2,7,150];  % Lower Bound
-UB = [0.6,160,35,0.15,0.9,40000,0.3,10,200]; % Upper Bound
+LB = [0.2,25,0.11,0.7,34000,0.2,7,3000];  % Lower Bound
+UB = [0.6,35,0.15,0.85,40000,0.3,10,4100]; % Upper Bound
 
-x0 = [0.3,140,27,0.13,0.85,36000,0.29,9,175]; % Starting Value
+x0 = [0.25,30,0.15,0.8,36000,0.25,9,3500]; % Starting Value
 
 A = [];
 B = [];
@@ -19,19 +19,13 @@ Beq = [];
 
 options = optimoptions('fmincon','Algorithm','sqp','Display','iter-detailed',...
     'FunctionTolerance',1e-6,'OptimalityTolerance',1e-6,'ConstraintTolerance',1e-6,....
-    'StepTolerance',1e-6,'MaxFunctionEvaluations',500);
+    'StepTolerance',1e-20,'MaxFunctionEvaluations',600);
  
 [X,~,exitflag] = fmincon(@(x) Obj_Func(x), x0, A, B, Aeq, Beq, LB, UB, @(x) Nonlincon(x),options);
 
 %% Plotting
- x1 = 0.1:0.005:0.6; % T/W
- x2 = 50:1.1:160;    % Wing loading
-% [X1,X2] = meshgrid(x1,x2);
-% 
-% cost = X1./X2;
-% 
-% figure(2)
-% contour(X2,X1,cost,20);
+x1 = 0.1:0.005:0.6; % T/W
+x2 = 50:1.1:160;    % Wing loading
 
 R = 287;
 S_TOFL = Aircraft.Performance.takeoff_runway_length; % Take-off field length in feets
@@ -50,36 +44,51 @@ VS = VS/0.592484; % Stall Speed in ft/s
 CL_max_L = 2.3;
 rho = 0.0726; % Density in lbs/ft^3
 
-x = (VS^2)*CL_max_L*rho/(2*32.2*0.84)*ones(1,101);
+x = (VS^2)*CL_max_L*rho/(2*32.2*Aircraft.Weight.Landing_Takeoff)*ones(1,101);
 y = x1;
 plot(x,y,'LineWidth',1.5);
 
 AR = Aircraft.Wing.Aspect_Ratio;
+e = Aircraft.Aero.e_takeoff_flaps;
 CGR = 0.024;
 Thrust_Factor = 0.966;
 Speed_Factor = 1.2;
 CL_max = 1.9;
 Corrected_CL = CL_max/Speed_Factor^2;
-CD_o = 0.031;
-L_by_D = Corrected_CL/(CD_o + Corrected_CL^2/(pi*AR*0.8));
+CD_o = Aircraft.Aero.C_D0_clean + Aircraft.Aero.delta_C_D0_takeoff;
+K = (pi*AR*e)^-1;
+L_by_D = Corrected_CL/( CD_o + K*Corrected_CL^2 );
 
 x = x2;
 y = 2*(L_by_D^(-1) + CGR)*Thrust_Factor*ones(1,101);
 
 plot(x,y,'LineWidth',1.5);
 
-M = Aircraft.Performance.M_cruise;
 Cruising_Altitude = Aircraft.Performance.altitude_cruise1; %in feets
-[~,rho,~,a] = ISA(Cruising_Altitude*0.3048);
-V = M*a/0.3048;
-rho = rho*1.94e-3;
+[P,rho,T,a] = ISA(Cruising_Altitude*0.3048);
+rho = rho*0.0623;
+V = Aircraft.Performance.M_cruise*a/0.3048;
 q = 0.5*rho*V^2;
-alpha = 0.324;
-K = 2*q*0.016/alpha;
-y = K./x;
+q = q/32;
+alpha = (P*288.15)/(T*101325);
+beta = 0.96;
+
+y = ones(1,101);
+
+for i = 1:101
+
+    y(i) = ( (beta*x2(i) )/(pi*Aircraft.Wing.Aspect_Ratio*Aircraft.Aero.e_clean*q) ...
+            + ( (Aircraft.Aero.C_D0_clean + 0.003)*q)/( beta*x2(i) ) )/(alpha/beta);
+    
+end
 
 plot(x,y,'LineWidth',1.5);
 
-plot(X(2),X(1),'o');
+plot(Aircraft.Performance.WbyS,Aircraft.Performance.TbyW,'o');
 
 hold off
+
+title('Constraint Diagram');
+ylabel('T/W');
+xlabel('W/S (lbs/ft^2)');
+legend ('Takeoff','Landing','Climb','Cruising Speed and Altitude');

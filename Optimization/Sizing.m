@@ -23,8 +23,9 @@ function Aircraft = Sizing(Aircraft)
     function Aircraft = Wing_Sizing(Aircraft)
         
 %        Aircraft.Wing.Aspect_Ratio = 9;
-        Aircraft.Wing.S = Aircraft.Wing.b^2/Aircraft.Wing.Aspect_Ratio;
-%         Aircraft.Wing.b = sqrt(Aircraft.Wing.Aspect_Ratio*Aircraft.Wing.S);
+%        Aircraft.Wing.S = Aircraft.Wing.b^2/Aircraft.Wing.Aspect_Ratio;
+%         Aircraft.Wing.S = Aircraft.Weight.MTOW/Aircraft.Performance.WbyS;
+        Aircraft.Wing.b = sqrt(Aircraft.Wing.Aspect_Ratio*Aircraft.Wing.S);
 %         Aircraft.Wing.taper_ratio = 0.3;
 %         Aircraft.Wing.Sweep_qc = 30;
         Aircraft.Wing.chord_root = 2*Aircraft.Wing.S/(Aircraft.Wing.b*(1 + Aircraft.Wing.taper_ratio));
@@ -37,7 +38,7 @@ function Aircraft = Sizing(Aircraft)
         Aircraft.Wing.mac = 2*Aircraft.Wing.chord_root*(1 + Aircraft.Wing.taper_ratio ...
                             + Aircraft.Wing.taper_ratio^2)/(3*(1 + Aircraft.Wing.taper_ratio));
         Aircraft.Wing.Y = (Aircraft.Wing.b/6)*(1 + 2*Aircraft.Wing.taper_ratio) ...
-                            *(1 + Aircraft.Wing.taper_ratio);
+                            /(1 + Aircraft.Wing.taper_ratio);
 
         Aircraft.Wing.Dihedral = 3;
         Aircraft.Wing.incidence = 1;
@@ -126,8 +127,8 @@ function Aircraft = Sizing(Aircraft)
 
     %% Fuselage Sizing
     function Aircraft = Fuselage_Sizing(Aircraft)
-        Aircraft.Fuselage.length = 240.43;
-        Aircraft.Fuselage.diameter = 250.51*in2ft;
+        Aircraft.Fuselage.length = 225.8792;
+        Aircraft.Fuselage.diameter = 20.375;
     end
 
     %% Propulsion Sizing
