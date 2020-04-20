@@ -24,10 +24,10 @@ function value = Obj_Func(x)
         Aircraft.Performance.WbyS = Aircraft.Weight.MTOW/Aircraft.Wing.S;
         Aircraft = Aero(Aircraft);
 
-        Aircraft = Payload_Weight(Aircraft);
+        Aircraft = Crew_Payload_Weight(Aircraft);
         Aircraft = Empty_Weight(Aircraft);
         Aircraft = Fuel_Weight(Aircraft);
-        Aircraft.Weight.MTOW = Aircraft.Weight.payload + Aircraft.Weight.fuel_Weight...
+        Aircraft.Weight.MTOW = Aircraft.Weight.crew + Aircraft.Weight.payload + Aircraft.Weight.fuel_Weight...
                                + Aircraft.Weight.empty_Weight;
 
         error = abs(error - Aircraft.Weight.MTOW);

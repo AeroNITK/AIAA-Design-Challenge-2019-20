@@ -9,7 +9,6 @@
 function Aircraft = Sizing(Aircraft)
     
     d2r = pi/180;
-    in2ft = 1/12;
     
     Aircraft = Wing_Sizing(Aircraft);
     
@@ -43,6 +42,11 @@ function Aircraft = Sizing(Aircraft)
         Aircraft.Wing.Dihedral = 3;
         Aircraft.Wing.incidence = 1;
 %         Aircraft.Wing.t_c_root = 0.15;
+
+        % Wing fuel volume calculation (ft^3)
+        Aircraft.Wing.fuel_volume = 0.54*(Aircraft.Wing.S^2/Aircraft.Wing.b)*Aircraft.Wing.t_c_root ...
+                        *(1 + Aircraft.Wing.taper_ratio + Aircraft.Wing.taper_ratio^2) ...
+                        /(1 + Aircraft.Wing.taper_ratio)^2; 
         
     end
 
