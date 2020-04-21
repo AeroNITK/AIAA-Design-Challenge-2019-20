@@ -27,20 +27,57 @@ function Aircraft = Sizing(Aircraft)
         Aircraft.Wing.b = sqrt(Aircraft.Wing.Aspect_Ratio*Aircraft.Wing.S);
 %         Aircraft.Wing.taper_ratio = 0.3;
 %         Aircraft.Wing.Sweep_qc = 30;
-        Aircraft.Wing.chord_root = 2*Aircraft.Wing.S/(Aircraft.Wing.b*(1 + Aircraft.Wing.taper_ratio));
-        Aircraft.Wing.Sweep_LE = atan(tan(Aircraft.Wing.Sweep_qc*d2r) - (Aircraft.Wing.chord_root...
-                            *(Aircraft.Wing.taper_ratio - 1))/2/Aircraft.Wing.b)/d2r;
-        Aircraft.Wing.Sweep_hc = atan( tan(Aircraft.Wing.Sweep_qc*d2r) - ...
-                                            (1 - Aircraft.Wing.taper_ratio)...
-                                            /(Aircraft.Wing.Aspect_Ratio*(1 + Aircraft.Wing.taper_ratio)) )/d2r;                
-        Aircraft.Wing.chord_tip = Aircraft.Wing.chord_root*Aircraft.Wing.taper_ratio;
-        Aircraft.Wing.mac = 2*Aircraft.Wing.chord_root*(1 + Aircraft.Wing.taper_ratio ...
-                            + Aircraft.Wing.taper_ratio^2)/(3*(1 + Aircraft.Wing.taper_ratio));
-        Aircraft.Wing.Y = (Aircraft.Wing.b/6)*(1 + 2*Aircraft.Wing.taper_ratio) ...
-                            /(1 + Aircraft.Wing.taper_ratio);
 
-        Aircraft.Wing.Dihedral = 3;
+        Aircraft.Wing.Sweep_LE = atan( tan(Aircraft.Wing.Sweep_qc*d2r) + ...
+                                (1 - Aircraft.Wing.taper_ratio)/(Aircraft.Wing.Aspect_Ratio*(1 + Aircraft.Wing.taper_ratio)) )/d2r;
+                
+        Aircraft.Wing.Sweep_hc = atan( tan(Aircraft.Wing.Sweep_qc*d2r) - ...
+                                (1 - Aircraft.Wing.taper_ratio)/(Aircraft.Wing.Aspect_Ratio*(1 + Aircraft.Wing.taper_ratio)) )/d2r;    
+
+        Aircraft.Wing.yb = 0.45*Aircraft.Wing.b/2;
+        
+        Aircraft.Wing.chord_root = ( 2*Aircraft.Wing.S/Aircraft.Wing.b + Aircraft.Wing.yb*tan(d2r*Aircraft.Wing.Sweep_LE) ) / ....
+                                    ( 2*Aircraft.Wing.yb*(1 - Aircraft.Wing.taper_ratio)/Aircraft.Wing.b ...
+                                    + Aircraft.Wing.taper_ratio + 1 );
+                                
+        Aircraft.Wing.cb = Aircraft.Wing.chord_root - Aircraft.Wing.yb*tan(d2r*Aircraft.Wing.Sweep_LE);
+        
+        Aircraft.Wing.chord_tip = Aircraft.Wing.chord_root*Aircraft.Wing.taper_ratio;
+        
+        Aircraft.Wing.Dihedral = 5; % Based on average taken from Raymer (Pg. No. 89)
+        
         Aircraft.Wing.incidence = 1;
+        
+        lamda_i = Aircraft.Wing.cb/Aircraft.Wing.chord_root;
+        
+        lamda_o = Aircraft.Wing.chord_tip/Aircraft.Wing.cb;
+        
+        Si = Aircraft.Wing.yb*(Aircraft.Wing.chord_root + Aircraft.Wing.cb)/2;
+        
+        So = (Aircraft.Wing.b/2 - Aircraft.Wing.yb)*(Aircraft.Wing.cb + Aircraft.Wing.chord_tip);
+        
+        mac_i = 2*Aircraft.Wing.chord_root*(1 + lamda_i + lamda_i^2)/(3*(1 + lamda_i));
+        
+        mac_o = 2*Aircraft.Wing.cb*(1 + lamda_o + lamda_o^2)/(3*(1 + lamda_o));
+        
+        yi = (Aircraft.Wing.yb/6)*(1 + 2*lamda_i)/(1 + lamda_i);
+        
+        yo = ( (Aircraft.Wing.b/2 - Aircraft.Wing.yb)/3 )*(1 + 2*lamda_o)/(1 + lamda_o);
+        
+        Aircraft.Wing.mac = (Si*mac_i + So*mac_o)/Aircraft.Wing.S;
+        
+        Aircraft.Wing.Y = (Si*yi + So*(Aircraft.Wing.yb + yo))/Aircraft.Wing.S;
+
+%         Aircraft.Wing.chord_root = 2*Aircraft.Wing.S/(Aircraft.Wing.b*(1 + Aircraft.Wing.taper_ratio));
+%             
+%         Aircraft.Wing.chord_tip = Aircraft.Wing.chord_root*Aircraft.Wing.taper_ratio;
+%         Aircraft.Wing.mac = 2*Aircraft.Wing.chord_root*(1 + Aircraft.Wing.taper_ratio ...
+%                             + Aircraft.Wing.taper_ratio^2)/(3*(1 + Aircraft.Wing.taper_ratio));
+%         Aircraft.Wing.Y = (Aircraft.Wing.b/6)*(1 + 2*Aircraft.Wing.taper_ratio) ...
+%                             /(1 + Aircraft.Wing.taper_ratio);
+% 
+%         Aircraft.Wing.Dihedral = 3;
+%         Aircraft.Wing.incidence = 1;
 %         Aircraft.Wing.t_c_root = 0.15;
 
         % Wing fuel volume calculation (ft^3)
