@@ -34,7 +34,7 @@ function Aircraft = Sizing(Aircraft)
         Aircraft.Wing.Sweep_hc = atan( tan(Aircraft.Wing.Sweep_qc*d2r) - ...
                                 (1 - Aircraft.Wing.taper_ratio)/(Aircraft.Wing.Aspect_Ratio*(1 + Aircraft.Wing.taper_ratio)) )/d2r;    
 
-        Aircraft.Wing.yb = 0.45*Aircraft.Wing.b/2;
+        Aircraft.Wing.yb = 0.31*Aircraft.Wing.b/2;  % Based on the average taken from existing aircraft
         
         Aircraft.Wing.chord_root = ( 2*Aircraft.Wing.S/Aircraft.Wing.b + Aircraft.Wing.yb*tan(d2r*Aircraft.Wing.Sweep_LE) ) / ....
                                     ( 2*Aircraft.Wing.yb*(1 - Aircraft.Wing.taper_ratio)/Aircraft.Wing.b ...
@@ -52,9 +52,9 @@ function Aircraft = Sizing(Aircraft)
         
         lamda_o = Aircraft.Wing.chord_tip/Aircraft.Wing.cb;
         
-        Si = Aircraft.Wing.yb*(Aircraft.Wing.chord_root + Aircraft.Wing.cb)/2;
+        Aircraft.Wing.Si = Aircraft.Wing.yb*(Aircraft.Wing.chord_root + Aircraft.Wing.cb);
         
-        So = (Aircraft.Wing.b/2 - Aircraft.Wing.yb)*(Aircraft.Wing.cb + Aircraft.Wing.chord_tip);
+        Aircraft.Wing.So = (Aircraft.Wing.b/2 - Aircraft.Wing.yb)*(Aircraft.Wing.cb + Aircraft.Wing.chord_tip);
         
         mac_i = 2*Aircraft.Wing.chord_root*(1 + lamda_i + lamda_i^2)/(3*(1 + lamda_i));
         
@@ -64,9 +64,9 @@ function Aircraft = Sizing(Aircraft)
         
         yo = ( (Aircraft.Wing.b/2 - Aircraft.Wing.yb)/3 )*(1 + 2*lamda_o)/(1 + lamda_o);
         
-        Aircraft.Wing.mac = (Si*mac_i + So*mac_o)/Aircraft.Wing.S;
+        Aircraft.Wing.mac = (Aircraft.Wing.Si*mac_i + Aircraft.Wing.So*mac_o)/Aircraft.Wing.S;
         
-        Aircraft.Wing.Y = (Si*yi + So*(Aircraft.Wing.yb + yo))/Aircraft.Wing.S;
+        Aircraft.Wing.Y = (Aircraft.Wing.Si*yi + Aircraft.Wing.So*(Aircraft.Wing.yb + yo))/Aircraft.Wing.S;
 
 %         Aircraft.Wing.chord_root = 2*Aircraft.Wing.S/(Aircraft.Wing.b*(1 + Aircraft.Wing.taper_ratio));
 %             
