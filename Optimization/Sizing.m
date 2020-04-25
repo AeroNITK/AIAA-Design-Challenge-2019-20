@@ -60,7 +60,7 @@ function Aircraft = Sizing(Aircraft)
         
         mac_o = 2*Aircraft.Wing.cb*(1 + lamda_o + lamda_o^2)/(3*(1 + lamda_o));
         
-        yi = (Aircraft.Wing.yb/6)*(1 + 2*lamda_i)/(1 + lamda_i);
+        yi = (Aircraft.Wing.yb/3)*(1 + 2*lamda_i)/(1 + lamda_i);
         
         yo = ( (Aircraft.Wing.b/2 - Aircraft.Wing.yb)/3 )*(1 + 2*lamda_o)/(1 + lamda_o);
         
@@ -162,14 +162,18 @@ function Aircraft = Sizing(Aircraft)
 
         Aircraft.Tail.Vertical.t_c = 0.15;    % NACA 0015
         
-        Aircraft.Tail.Vertical.height = 6.6187 + Aircraft.Tail.Vertical.b; % Assumed to be constant
+        Aircraft.Tail.Vertical.height = 6.6187 + Aircraft.Tail.Vertical.b; % fist part assumed to be constant
     
     end
 
     %% Fuselage Sizing
     function Aircraft = Fuselage_Sizing(Aircraft)
-        Aircraft.Fuselage.length = 225.8792;
-        Aircraft.Fuselage.diameter = 20.375;
+        Aircraft.Fuselage.diameter = 20.875;
+        Aircraft.Fuselage.diameter_cabin = 20.375;
+        Aircraft.Fuselage.length_cabin = 135;   % Length of cabin
+        Aircraft.Fuselage.length_tc = 56;   % Length of tail cone
+        Aircraft.Fuselage.length_nc = 34.88;   % Length of nose cone
+        Aircraft.Fuselage.length = Aircraft.Fuselage.length_cabin + Aircraft.Fuselage.length_tc + Aircraft.Fuselage.length_nc;
     end
 
     %% Propulsion Sizing
