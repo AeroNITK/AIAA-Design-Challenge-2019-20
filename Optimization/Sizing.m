@@ -121,7 +121,7 @@ function Aircraft = Sizing(Aircraft)
                             + Aircraft.Tail.Horizontal.taper_ratio^2)/(3*(1 + Aircraft.Tail.Horizontal.taper_ratio));
 
         Aircraft.Tail.Horizontal.Y = (Aircraft.Tail.Horizontal.b/6)*(1 + 2*Aircraft.Tail.Horizontal.taper_ratio) ...
-                            *(1 + Aircraft.Tail.Horizontal.taper_ratio);
+                            /(1 + Aircraft.Tail.Horizontal.taper_ratio);
 
         Aircraft.Tail.Horizontal.t_c = 0.12;    % NACA 0012
         
@@ -148,17 +148,17 @@ function Aircraft = Sizing(Aircraft)
         Aircraft.Tail.Vertical.chord_tip = Aircraft.Tail.Vertical.taper_ratio * Aircraft.Tail.Vertical.chord_root;
 
         Aircraft.Tail.Vertical.Sweep_LE = atan(tan(Aircraft.Tail.Vertical.Sweep_qc*d2r) - (Aircraft.Tail.Vertical.chord_root...
-                            *(Aircraft.Tail.Vertical.taper_ratio - 1))/2/Aircraft.Tail.Vertical.b)/d2r;
+                            *(Aircraft.Tail.Vertical.taper_ratio - 1))/4/Aircraft.Tail.Vertical.b)/d2r;
 
         Aircraft.Tail.Vertical.Sweep_hc = atan( tan(Aircraft.Tail.Vertical.Sweep_qc*d2r) - ...
                                             (1 - Aircraft.Tail.Vertical.taper_ratio)...
-                                            /(Aircraft.Tail.Vertical.Aspect_Ratio*(1 + Aircraft.Tail.Vertical.taper_ratio)) )/d2r;
+                                            /(2*Aircraft.Tail.Vertical.Aspect_Ratio*(1 + Aircraft.Tail.Vertical.taper_ratio)) )/d2r;
 
         Aircraft.Tail.Vertical.mac = 2*Aircraft.Tail.Vertical.chord_root*(1 + Aircraft.Tail.Vertical.taper_ratio ...
                             + Aircraft.Tail.Vertical.taper_ratio^2)/(3*(1 + Aircraft.Tail.Vertical.taper_ratio));
 
-        Aircraft.Tail.Vertical.Y = (Aircraft.Tail.Vertical.b/6)*(1 + 2*Aircraft.Tail.Vertical.taper_ratio) ...
-                            *(1 + Aircraft.Tail.Vertical.taper_ratio);
+        Aircraft.Tail.Vertical.Y = (Aircraft.Tail.Vertical.b/3)*(1 + 2*Aircraft.Tail.Vertical.taper_ratio) ...
+                            /(1 + Aircraft.Tail.Vertical.taper_ratio);
 
         Aircraft.Tail.Vertical.t_c = 0.15;    % NACA 0015
         

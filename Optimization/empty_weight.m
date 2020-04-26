@@ -12,23 +12,25 @@ function [Aircraft] = Empty_Weight(Aircraft)
     d2r = pi/180;
     %in2ft = 1/12;
 
-    W_wing = Wing_Weight(Aircraft);
-    W_fuselage = Fuselage_Weight(Aircraft);
-    W_LG = Landing_Gear_Weight(Aircraft);
-    W_tail = Tail_Weight(Aircraft);
-    W_pg_ng = Propulsion_Nacelle_Group_Weight(Aircraft);
-    W_fcg = Flight_Controls_group_Weight(Aircraft);
-    W_apug = Auxiliary_Power_Unit_group_Weight(Aircraft);
-    W_ig = Instrument_group_Weight(Aircraft);
-    W_hpg = Hydra_Pneu_group_Weight(Aircraft);
-    W_eg = Electrical_group_Weight(Aircraft);
-    W_av = Avionics_group_Weight(Aircraft);
-    W_ef = Equip_Furnish_group_Weight(Aircraft);
-    W_aci = AC_Anti_Icing_group_Weight(Aircraft);
+    Aircraft.Weight.wing = Wing_Weight(Aircraft);
+    Aircraft.Weight.fuselage = Fuselage_Weight(Aircraft);
+    Aircraft = Landing_Gear_Weight(Aircraft);
+    Aircraft = Tail_Weight(Aircraft);
+    Aircraft.Weight.pg_ng = Propulsion_Nacelle_Group_Weight(Aircraft);
+    Aircraft.Weight.fcg = Flight_Controls_group_Weight(Aircraft);
+    Aircraft.Weight.apug = Auxiliary_Power_Unit_group_Weight(Aircraft);
+    Aircraft.Weight.ig = Instrument_group_Weight(Aircraft);
+    Aircraft.Weight.hpg = Hydra_Pneu_group_Weight(Aircraft);
+    Aircraft.Weight.eg = Electrical_group_Weight(Aircraft);
+    Aircraft.Weight.av = Avionics_group_Weight(Aircraft);
+    Aircraft.Weight.ef = Equip_Furnish_group_Weight(Aircraft);
+    Aircraft.Weight.aci = AC_Anti_Icing_group_Weight(Aircraft);
     
-    Aircraft.Weight.empty_Weight = W_wing + W_fuselage + W_LG + W_tail ...
-                                + W_pg_ng + W_fcg + W_apug + W_ig ...
-                                + W_hpg + W_eg + W_av + W_ef + W_aci;    
+    Aircraft.Weight.empty_Weight = Aircraft.Weight.wing + Aircraft.Weight.fuselage + Aircraft.Weight.LG + Aircraft.Weight.tail ...
+                                + Aircraft.Weight.pg_ng + Aircraft.Weight.fcg + Aircraft.Weight.apug + Aircraft.Weight.ig ...
+                                + Aircraft.Weight.hpg + Aircraft.Weight.eg + Aircraft.Weight.av + Aircraft.Weight.ef + Aircraft.Weight.aci;
+                            
+                            
     
 %%  Function for calculating Wing Weight
 %%% Formula taken from Commercial Airplane Design Principles
@@ -65,19 +67,26 @@ function [Aircraft] = Empty_Weight(Aircraft)
 %%  Function for calculating Landing Gear Weight
 %%% Formula taken from Commercial Airplane Design Principles
 %%% Equation number 8.10; Pg. No. 311
-    function W_lg = Landing_Gear_Weight(Aircraft)
+    function Aircraft = Landing_Gear_Weight(Aircraft)
     
         LG_ff = 0.98;    % Landing Gear Fudge Factor (From Raymer)
         
-        W_lg = 0.00891*Aircraft.Weight.MTOW^1.12;
+        Aircraft.Weight.mlg = LG_ff*(40 + 0.16*Aircraft.Weight.MTOW^0.75 + 0.019*Aircraft.Weight.MTOW ...
+                              + 1.5e-5*Aircraft.Weight.MTOW^1.5);
+                          
+        Aircraft.Weight.nlg = LG_ff*(20 + 0.1*Aircraft.Weight.MTOW^0.75 + 2e-6 * Aircraft.Weight.MTOW^1.5);                 
         
-        W_lg = W_lg * LG_ff;
+        Aircraft.Weight.LG = Aircraft.Weight.mlg + Aircraft.Weight.nlg;
+        
+%         W_lg = 0.00891*Aircraft.Weight.MTOW^1.12;
+        
+%         W_lg = W_lg * LG_ff;
       
     end
 %%  Function for calculating Tail Weight
 %%% Formula taken from Commercial Airplane Design Principles
 %%% Equation number 8.13 & 8.14; Pg. No. 312 & 313
-    function W_t = Tail_Weight(Aircraft)
+    function Aircraft = Tail_Weight(Aircraft)
         
         T_ff = 0.85;    % Tail Fudge Factor (From Raymer)
         
@@ -92,7 +101,10 @@ function [Aircraft] = Empty_Weight(Aircraft)
         
         W_t = W_h + W_v;
         
-        W_t = W_t * T_ff;
+        Aircraft.Weight.tail = W_t * T_ff;
+        
+        Aircraft.Weight.vtail = W_v * T_ff;
+        Aircraft.Weight.htail = W_h * T_ff;
         
     end
 %%  Function for calculating Propulsion Group + Nacelle Weight
