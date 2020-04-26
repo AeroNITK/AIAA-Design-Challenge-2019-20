@@ -30,8 +30,8 @@ function [Aircraft] = Empty_Weight(Aircraft)
                                 + Aircraft.Weight.pg_ng + Aircraft.Weight.fcg + Aircraft.Weight.apug + Aircraft.Weight.ig ...
                                 + Aircraft.Weight.hpg + Aircraft.Weight.eg + Aircraft.Weight.av + Aircraft.Weight.ef + Aircraft.Weight.aci;
                             
-                            
-    
+    Aircraft.Weight.fixed_equip_weight = Aircraft.Weight.fcg + Aircraft.Weight.apug + Aircraft.Weight.ig + Aircraft.Weight.hpg ...
+                                + Aircraft.Weight.eg + Aircraft.Weight.av + Aircraft.Weight.ef + Aircraft.Weight.aci;                                                 
 %%  Function for calculating Wing Weight
 %%% Formula taken from Commercial Airplane Design Principles
 %%% Equation number 8.4; Pg. No. 306
