@@ -93,7 +93,7 @@ function Aircraft = Sizing(Aircraft)
         %%% Horizontal Tail
         % ------------------------------------------------------------------------------------------------------------------------
         Aircraft.Tail.Horizontal.Coeff = 0.82;    % Horizontal Tail Volume Coefficient - Avg data from CADP
-        Aircraft.Tail.Horizontal.arm = 0.47*Aircraft.Fuselage.length;    % Horizontal Tail Moment Arm (in ft)
+        Aircraft.Tail.Horizontal.arm = 0.475*Aircraft.Fuselage.length;    % Horizontal Tail Moment Arm (in ft)
         Aircraft.Tail.Horizontal.Aspect_Ratio = 4.57;   % Avg data from CADP   
         Aircraft.Tail.Horizontal.taper_ratio = 0.34;   % Avg data from CADP
         Aircraft.Tail.Horizontal.dihedral = 5.5;    % Avg data from Roskam (in deg)
@@ -130,7 +130,7 @@ function Aircraft = Sizing(Aircraft)
         %%% Vertical Tail
         % ------------------------------------------------------------------------------------------------------------------------
         Aircraft.Tail.Vertical.Coeff = 0.083;    % Vertical Tail Volume Coefficient - Avg data from CADP
-        Aircraft.Tail.Vertical.arm = 0.43*Aircraft.Fuselage.length;    % Vertical Tail Moment Arm (in ft)
+        Aircraft.Tail.Vertical.arm = 0.435*Aircraft.Fuselage.length;    % Vertical Tail Moment Arm (in ft)
         Aircraft.Tail.Vertical.Aspect_Ratio = 1.87;   % Avg data from CADP   
         Aircraft.Tail.Vertical.taper_ratio = 0.31;   % Avg data from CADP
         Aircraft.Tail.Vertical.dihedral = 90;    % Avg data from Roskam (in deg)

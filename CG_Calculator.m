@@ -19,6 +19,8 @@ Aircraft = MLG_cg(Aircraft);
 Aircraft = fixed_equip_cg(Aircraft);
 Aircraft = crew_cg(Aircraft);
 
+Aircraft.cg.fuel = Aircraft.Fuselage.length - 119.1125;
+
 %% Calculating cg of empty weight of plane (from nose in ft)
 Aircraft.cg.empty_weight = Aircraft.cg.fuselage*Aircraft.Weight.fuselage ...
                     +  Aircraft.cg.vtail*Aircraft.Weight.vtail ...
@@ -35,14 +37,14 @@ Aircraft.cg.empty_weight = Aircraft.cg.empty_weight/Aircraft.Weight.empty_Weight
 Aircraft.Weight.op_empty_weight = Aircraft.Weight.empty_Weight + Aircraft.Weight.crew + 0.01*Aircraft.Weight.fuel_Weight;
 
 Aircraft.cg.op_empty_weight = Aircraft.cg.empty_weight * Aircraft.Weight.empty_Weight ...
-                    +  Aircraft.cg.wing * 0.01 * Aircraft.Weight.fuel_Weight ...    % Fuel CG is Wing CG
+                    +  Aircraft.cg.fuel * 0.01 * Aircraft.Weight.fuel_Weight ...    % Fuel CG is Wing CG
                     +  Aircraft.cg.crew * Aircraft.Weight.crew;
 
 Aircraft.cg.op_empty_weight = Aircraft.cg.op_empty_weight/Aircraft.Weight.op_empty_weight;
 
 %% Calculating cg of Operating Empty Weight + Fuel Weight of plane (from nose in ft)
 Aircraft.cg.op_fuel = Aircraft.cg.op_empty_weight * Aircraft.Weight.op_empty_weight ...
-                    + Aircraft.cg.wing * 0.99 * Aircraft.Weight.fuel_Weight;
+                    + Aircraft.cg.fuel * 0.99 * Aircraft.Weight.fuel_Weight;
                 
 Aircraft.cg.op_fuel = Aircraft.cg.op_fuel/(Aircraft.Weight.op_empty_weight + 0.99 * Aircraft.Weight.fuel_Weight);                
 
@@ -57,7 +59,7 @@ Aircraft.cg.op_pass_bag = Aircraft.cg.op_pass_bag/( Aircraft.Weight.op_empty_wei
                         * (Aircraft.Weight.baggage + Aircraft.Weight.person) );
 
 %% Calculating cg of MTOW of plane (from nose in ft)
-Aircraft.cg.MTOW = Aircraft.cg.wing * 0.99 * Aircraft.Weight.fuel_Weight ...
+Aircraft.cg.MTOW = Aircraft.cg.fuel * 0.99 * Aircraft.Weight.fuel_Weight ...
                  + (Aircraft.Passenger.business +  Aircraft.Passenger.economy) ...
                  * (Aircraft.Weight.baggage + Aircraft.Weight.person) ...
                  * (Aircraft.Fuselage.length_nc + Aircraft.Fuselage.length_cabin/2) ...
@@ -83,28 +85,28 @@ end
 %% Vertical Tail CG Estimation
 function Aircraft = vertical_tail_cg(Aircraft)
 
-    Aircraft.cg.vtail = Aircraft.Fuselage.length - 18.948;%- 17.947;% - 18.719;  
+    Aircraft.cg.vtail = Aircraft.Fuselage.length - 19.039;%- 17.947;% - 18.719;  
     % 18.719 is from cad. Assumed that vertical tip trailing edge is inline with fuselage endpoint 
 
 end
 %% Wing CG Estimation
 function Aircraft = wing_cg(Aircraft)
     
-    Aircraft.cg.wing = Aircraft.Fuselage.length - 113.298;%- 125.647;% - 117.51;
+    Aircraft.cg.wing = Aircraft.Fuselage.length - 114.394;%- 125.647;% - 117.51;
     % 117.51 is from cad. Calculated from vertical tail moment arm.
 
 end
 %% Horizontal Tail CG Estimation
 function Aircraft = horizontal_tail_cg(Aircraft)
 
-    Aircraft.cg.htail = Aircraft.Fuselage.length - 11.038;% - 9.938;% - 10.769;  
+    Aircraft.cg.htail = Aircraft.Fuselage.length - 11.015;% - 9.938;% - 10.769;  
     % 10.769 is from cad. Calculated from horizontal tail moment arm. 
 
 end
 %% Propulsion CG Estimation
 function Aircraft = propulsion_cg(Aircraft)
 
-    Aircraft.cg.propulsion = Aircraft.Fuselage.length - 139.013;%- 150.715;%- 143.225;  
+    Aircraft.cg.propulsion = Aircraft.Fuselage.length - 140.109;%- 150.715;%- 143.225;  
     % 143.225 is from cad.
 
 end
@@ -149,7 +151,7 @@ end
 %% Plotting CG Travel
 function plotting(Aircraft)
 
-    X_LE_mac = Aircraft.Fuselage.length - 125.17; %- 137.546; %- 129.382;  % Based on cad model.
+    X_LE_mac = Aircraft.Fuselage.length - 126.266; %- 137.546; %- 129.382;  % Based on cad model.
     Xe = (Aircraft.cg.empty_weight - X_LE_mac)/Aircraft.Wing.mac;
     Xoe = (Aircraft.cg.op_empty_weight - X_LE_mac)/Aircraft.Wing.mac;
     Xoe_fuel = (Aircraft.cg.op_fuel - X_LE_mac)/Aircraft.Wing.mac;
@@ -173,7 +175,7 @@ function plotting(Aircraft)
     xlabel('Percentage of MAC')
     ylabel('Weight (lbs)')
     grid on
-%     xlim([0.25 0.4]);
+%     xlim([0.18 0.3]);
     text(Xe + 0.001,Aircraft.Weight.empty_Weight,'Empty Weight');
     text(Xoe + 0.001,Aircraft.Weight.op_empty_weight + 5000,'Opt Empty Weight');
     text(Xoe_fuel + 0.001,Aircraft.Weight.op_empty_weight + 0.99 * Aircraft.Weight.fuel_Weight,'Opt Empty Weight + Fuel');
