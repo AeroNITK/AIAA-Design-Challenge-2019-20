@@ -42,21 +42,44 @@ Aircraft.cg.op_empty_weight = Aircraft.cg.empty_weight * Aircraft.Weight.empty_W
 
 Aircraft.cg.op_empty_weight = Aircraft.cg.op_empty_weight/Aircraft.Weight.op_empty_weight;
 
+%% Calculating cg of Operating Empty Weight + Window passengers + Baggage (from nose in ft)
+Aircraft.cg.op_wind = Aircraft.cg.op_empty_weight * Aircraft.Weight.op_empty_weight ...
+                            + 84 * (Aircraft.Weight.baggage + Aircraft.Weight.person) ...   % 84 Window passengers
+                        * (Aircraft.Fuselage.length_nc + Aircraft.Fuselage.length_cabin/2);
+
+Aircraft.cg.op_wind = Aircraft.cg.op_wind/( Aircraft.Weight.op_empty_weight +  ...
+                        84 * (Aircraft.Weight.baggage + Aircraft.Weight.person) );
+                    
+%% Calculating cg of Operating Empty Weight + Window passengers + Middle Row + Baggage (from nose in ft)
+Aircraft.cg.op_wind_mid = Aircraft.cg.op_wind*(Aircraft.Weight.op_empty_weight + 84 * (Aircraft.Weight.baggage + Aircraft.Weight.person)) ...
+                            +  147 * (Aircraft.Weight.baggage + Aircraft.Weight.person) ...   % 147 Middle passengers
+                        * (Aircraft.Fuselage.length_nc + Aircraft.Fuselage.length_cabin/2);
+
+Aircraft.cg.op_wind_mid = Aircraft.cg.op_wind_mid/( Aircraft.Weight.op_empty_weight +  ...
+                        231 * (Aircraft.Weight.baggage + Aircraft.Weight.person) );                    
+
+%% Calculating cg of Operating Empty Weight + Window passengers + Middle Row + Aisle + Baggage (from nose in ft)
+Aircraft.cg.op_wind_mid_ais = Aircraft.cg.op_wind_mid*(Aircraft.Weight.op_empty_weight + 231 * (Aircraft.Weight.baggage + Aircraft.Weight.person)) ...
+                            +  169 * (Aircraft.Weight.baggage + Aircraft.Weight.person) ...   % 169 aisle passengers
+                        * (Aircraft.Fuselage.length_nc + Aircraft.Fuselage.length_cabin/2);
+
+Aircraft.cg.op_wind_mid_ais = Aircraft.cg.op_wind_mid_ais/( Aircraft.Weight.op_empty_weight +  ...
+                        400 * (Aircraft.Weight.baggage + Aircraft.Weight.person) );         
+                    
 %% Calculating cg of Operating Empty Weight + Fuel Weight of plane (from nose in ft)
 Aircraft.cg.op_fuel = Aircraft.cg.op_empty_weight * Aircraft.Weight.op_empty_weight ...
                     + Aircraft.cg.fuel * 0.99 * Aircraft.Weight.fuel_Weight;
                 
 Aircraft.cg.op_fuel = Aircraft.cg.op_fuel/(Aircraft.Weight.op_empty_weight + 0.99 * Aircraft.Weight.fuel_Weight);                
 
-%% Calculating cg of Operating Empty Weight + Passengers + Baggage of plane (from nose in ft)
-Aircraft.cg.op_pass_bag = Aircraft.cg.op_empty_weight * Aircraft.Weight.op_empty_weight ...
-                        + (Aircraft.Passenger.business +  Aircraft.Passenger.economy) ...
-                        * (Aircraft.Weight.baggage + Aircraft.Weight.person) ...
-                        * (Aircraft.Fuselage.length_nc + Aircraft.Fuselage.length_cabin/2);
+%% Calculating cg of Operating Empty Weight + Fuel + Passengers + Baggage of plane (Behind the CG) (from nose in ft)
+Aircraft.cg.op_fuel_pass_bag = Aircraft.cg.op_fuel * (Aircraft.Weight.op_empty_weight + 0.99 * Aircraft.Weight.fuel_Weight) ...
+                        + 190 * Aircraft.Weight.person * (Aircraft.Fuselage.length_nc + 0.625*Aircraft.Fuselage.length_cabin) ...
+                        + 190 * Aircraft.Weight.baggage * (Aircraft.Fuselage.length_nc + 0.5*Aircraft.Fuselage.length_cabin);
                 
-Aircraft.cg.op_pass_bag = Aircraft.cg.op_pass_bag/( Aircraft.Weight.op_empty_weight + ...
-                          (Aircraft.Passenger.business +  Aircraft.Passenger.economy) ...
-                        * (Aircraft.Weight.baggage + Aircraft.Weight.person) );
+Aircraft.cg.op_fuel_pass_bag = Aircraft.cg.op_fuel_pass_bag/( Aircraft.Weight.op_empty_weight + ...
+                          190 * (Aircraft.Weight.baggage + Aircraft.Weight.person) ...
+                          + 0.99 * Aircraft.Weight.fuel_Weight);
 
 %% Calculating cg of MTOW of plane (from nose in ft)
 Aircraft.cg.MTOW = Aircraft.cg.fuel * 0.99 * Aircraft.Weight.fuel_Weight ...
@@ -79,7 +102,7 @@ function Aircraft = fuselage_cg(Aircraft)
 %     Aircraft.cg.fuselage = ( Aircraft.Fuselage.length/fuselage_fineness_ratio )*( nosecone_fineness_ratio ... 
 %         + (fuselage_fineness_ratio - 5)/1.8 );
 
-      Aircraft.cg.fuselage = 0.44*Aircraft.Fuselage.length;  
+      Aircraft.cg.fuselage = 0.435*Aircraft.Fuselage.length;  
     
 end
 %% Vertical Tail CG Estimation
@@ -154,8 +177,11 @@ function plotting(Aircraft)
     X_LE_mac = Aircraft.Fuselage.length - 126.266; %- 137.546; %- 129.382;  % Based on cad model.
     Xe = (Aircraft.cg.empty_weight - X_LE_mac)/Aircraft.Wing.mac;
     Xoe = (Aircraft.cg.op_empty_weight - X_LE_mac)/Aircraft.Wing.mac;
+    Xoe_wind = (Aircraft.cg.op_wind - X_LE_mac)/Aircraft.Wing.mac;
+    Xoe_wind_mid = (Aircraft.cg.op_wind_mid - X_LE_mac)/Aircraft.Wing.mac;
+    Xoe_wind_mid_ais = (Aircraft.cg.op_wind_mid_ais - X_LE_mac)/Aircraft.Wing.mac;
     Xoe_fuel = (Aircraft.cg.op_fuel - X_LE_mac)/Aircraft.Wing.mac;
-    Xoe_pass_bag = (Aircraft.cg.op_pass_bag - X_LE_mac)/Aircraft.Wing.mac;
+    Xoe_fuel_pass_bag = (Aircraft.cg.op_fuel_pass_bag - X_LE_mac)/Aircraft.Wing.mac; 
     Xmtow = (Aircraft.cg.MTOW - X_LE_mac)/Aircraft.Wing.mac;
     
     plot(Xe,Aircraft.Weight.empty_Weight,'o');
@@ -163,10 +189,12 @@ function plotting(Aircraft)
     hold on
     
     plot(Xoe,Aircraft.Weight.op_empty_weight,'x');
+    plot(Xoe_wind, Aircraft.Weight.op_empty_weight + 84 * (Aircraft.Weight.baggage + Aircraft.Weight.person),'o');
+    plot(Xoe_wind_mid, Aircraft.Weight.op_empty_weight + 231 * (Aircraft.Weight.baggage + Aircraft.Weight.person),'^');
+    plot(Xoe_wind_mid_ais, Aircraft.Weight.op_empty_weight + 400 * (Aircraft.Weight.baggage + Aircraft.Weight.person),'*');
     plot(Xoe_fuel,Aircraft.Weight.op_empty_weight + 0.99 * Aircraft.Weight.fuel_Weight,'o');
-    plot(Xoe_pass_bag, Aircraft.Weight.op_empty_weight + ...
-                      (Aircraft.Passenger.business +  Aircraft.Passenger.economy) ...
-                    * (Aircraft.Weight.baggage + Aircraft.Weight.person) ,'x');
+    plot(Xoe_fuel_pass_bag, Aircraft.Weight.op_empty_weight + 190*(Aircraft.Weight.baggage + Aircraft.Weight.person) ...
+                            + 0.99 * Aircraft.Weight.fuel_Weight,'+');
     plot(Xmtow,Aircraft.Weight.MTOW,'+');
     
     hold off
@@ -179,9 +207,15 @@ function plotting(Aircraft)
     text(Xe + 0.001,Aircraft.Weight.empty_Weight,'Empty Weight');
     text(Xoe + 0.001,Aircraft.Weight.op_empty_weight + 5000,'Opt Empty Weight');
     text(Xoe_fuel + 0.001,Aircraft.Weight.op_empty_weight + 0.99 * Aircraft.Weight.fuel_Weight,'Opt Empty Weight + Fuel');
-    text(Xoe_pass_bag + 0.001, Aircraft.Weight.op_empty_weight + ...
-                      (Aircraft.Passenger.business +  Aircraft.Passenger.economy) ...
-                    * (Aircraft.Weight.baggage + Aircraft.Weight.person) + 5000, 'Opt Empty Weight + Passenger + Baggage');
     text(Xmtow + 0.001,Aircraft.Weight.MTOW + 5000,'MTOW');            
     
 end
+
+
+%     Xoe_pass_bag = (Aircraft.cg.op_pass_bag - X_LE_mac)/Aircraft.Wing.mac;
+
+
+%     text(Xoe_fuel + 0.001,Aircraft.Weight.op_empty_weight + 0.99 * Aircraft.Weight.fuel_Weight,'Opt Empty Weight + Fuel');
+%     text(Xoe_pass_bag + 0.001, Aircraft.Weight.op_empty_weight + ...
+%                       (Aircraft.Passenger.business +  Aircraft.Passenger.economy) ...
+%                     * (Aircraft.Weight.baggage + Aircraft.Weight.person) + 5000, 'Opt Empty Weight + Passenger + Baggage');
