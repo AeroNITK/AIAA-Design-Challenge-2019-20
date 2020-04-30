@@ -93,6 +93,8 @@ Aircraft.cg.MTOW = Aircraft.cg.MTOW/Aircraft.Weight.MTOW;
 %% Plotting CG travel
 plotting(Aircraft)
 
+save('Aircraft');
+
 %% Fuselage CG Estimation
 function Aircraft = fuselage_cg(Aircraft)
 
@@ -136,7 +138,7 @@ end
 %% Nose landing CG Estimation
 function Aircraft = NLG_cg(Aircraft)
 
-    Aircraft.cg.nlg = 0.17*Aircraft.Fuselage.length;  % From CADP
+    Aircraft.cg.nlg = 0.08*Aircraft.Fuselage.length;  % From CADP
     
 end
 %% Main landing CG Estimation

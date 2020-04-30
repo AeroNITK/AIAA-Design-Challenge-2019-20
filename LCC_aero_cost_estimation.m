@@ -240,31 +240,3 @@ C_OPS=(DOC*(Rbl_ann)*Nacq*Nyr)+(IOC*(Rbl_ann)*Nacq*Nyr)
 
 LCC=(C_RDTE+C_ACQ+C_OPS)/0.99                 %%C_DISPOSAL=0.01*LCC
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
