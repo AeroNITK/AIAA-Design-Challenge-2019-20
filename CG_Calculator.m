@@ -111,34 +111,41 @@ end
 function Aircraft = vertical_tail_cg(Aircraft)
 
     Aircraft.cg.vtail = Aircraft.Fuselage.length - 19.039;%- 17.947;% - 18.719;  
-    % 18.719 is from cad. Assumed that vertical tip trailing edge is inline with fuselage endpoint 
+    % 19.039 is from cad sketch. Assumed that vertical tip trailing edge is inline with fuselage endpoint 
+    
+    Aircraft.Tail.Vertical.root_chord_pos = 186.013;    % From nose (in ft). From cad sketch
 
 end
 %% Wing CG Estimation
 function Aircraft = wing_cg(Aircraft)
     
     Aircraft.cg.wing = Aircraft.Fuselage.length - 114.394;%- 125.647;% - 117.51;
-    % 117.51 is from cad. Calculated from vertical tail moment arm.
+    % 114.394 is from cad sketch. Calculated from vertical tail moment arm.
+    
+    Aircraft.Wing.root_chord_pos = 79.734;    % From nose (in ft). From cad sketch
+    Aircraft.Wing.Y = 25.896;   % From cad sketch
 
 end
 %% Horizontal Tail CG Estimation
 function Aircraft = horizontal_tail_cg(Aircraft)
 
     Aircraft.cg.htail = Aircraft.Fuselage.length - 11.015;% - 9.938;% - 10.769;  
-    % 10.769 is from cad. Calculated from horizontal tail moment arm. 
+    % 11.015 is from cad sketch. Calculated from horizontal tail moment arm. 
+    
+    Aircraft.Tail.Horizontal.root_chord_pos = 200.524;    % From nose (in ft). From cad sketch
 
 end
 %% Propulsion CG Estimation
 function Aircraft = propulsion_cg(Aircraft)
 
     Aircraft.cg.propulsion = Aircraft.Fuselage.length - 140.109;%- 150.715;%- 143.225;  
-    % 143.225 is from cad.
+    % 140.109 is from cad sketch.
 
 end
 %% Nose landing CG Estimation
 function Aircraft = NLG_cg(Aircraft)
 
-    Aircraft.cg.nlg = 0.08*Aircraft.Fuselage.length;  % From CADP
+    Aircraft.cg.nlg = 0.08*Aircraft.Fuselage.length;  % Based on load distribution
     
 end
 %% Main landing CG Estimation
@@ -212,7 +219,6 @@ function plotting(Aircraft)
     text(Xmtow + 0.001,Aircraft.Weight.MTOW + 5000,'MTOW');            
     
 end
-
 
 %     Xoe_pass_bag = (Aircraft.cg.op_pass_bag - X_LE_mac)/Aircraft.Wing.mac;
 
