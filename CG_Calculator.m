@@ -151,7 +151,7 @@ end
 %% Main landing CG Estimation
 function Aircraft = MLG_cg(Aircraft)
 
-    Aircraft.cg.mlg = 0.55*Aircraft.Fuselage.length;  % From CADP
+    Aircraft.cg.mlg = 0.51797*Aircraft.Fuselage.length;  % For retracting landing gear into the wing.
     
 end
 %% Fixed Equipment CG Estimation
