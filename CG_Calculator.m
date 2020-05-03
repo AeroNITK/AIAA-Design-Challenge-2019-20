@@ -45,7 +45,7 @@ Aircraft.cg.op_empty_weight = Aircraft.cg.op_empty_weight/Aircraft.Weight.op_emp
 %% Calculating cg of Operating Empty Weight + Window passengers + Baggage (from nose in ft)
 Aircraft.cg.op_wind = Aircraft.cg.op_empty_weight * Aircraft.Weight.op_empty_weight ...
                             + 84 * (Aircraft.Weight.baggage + Aircraft.Weight.person) ...   % 84 Window passengers
-                        * (Aircraft.Fuselage.length_nc + Aircraft.Fuselage.length_cabin/2);
+                        * (Aircraft.Fuselage.length_nc + 0.53*Aircraft.Fuselage.length_cabin);
 
 Aircraft.cg.op_wind = Aircraft.cg.op_wind/( Aircraft.Weight.op_empty_weight +  ...
                         84 * (Aircraft.Weight.baggage + Aircraft.Weight.person) );
@@ -53,7 +53,7 @@ Aircraft.cg.op_wind = Aircraft.cg.op_wind/( Aircraft.Weight.op_empty_weight +  .
 %% Calculating cg of Operating Empty Weight + Window passengers + Middle Row + Baggage (from nose in ft)
 Aircraft.cg.op_wind_mid = Aircraft.cg.op_wind*(Aircraft.Weight.op_empty_weight + 84 * (Aircraft.Weight.baggage + Aircraft.Weight.person)) ...
                             +  147 * (Aircraft.Weight.baggage + Aircraft.Weight.person) ...   % 147 Middle passengers
-                        * (Aircraft.Fuselage.length_nc + Aircraft.Fuselage.length_cabin/2);
+                        * (Aircraft.Fuselage.length_nc + 0.53*Aircraft.Fuselage.length_cabin);
 
 Aircraft.cg.op_wind_mid = Aircraft.cg.op_wind_mid/( Aircraft.Weight.op_empty_weight +  ...
                         231 * (Aircraft.Weight.baggage + Aircraft.Weight.person) );                    
@@ -61,7 +61,7 @@ Aircraft.cg.op_wind_mid = Aircraft.cg.op_wind_mid/( Aircraft.Weight.op_empty_wei
 %% Calculating cg of Operating Empty Weight + Window passengers + Middle Row + Aisle + Baggage (from nose in ft)
 Aircraft.cg.op_wind_mid_ais = Aircraft.cg.op_wind_mid*(Aircraft.Weight.op_empty_weight + 231 * (Aircraft.Weight.baggage + Aircraft.Weight.person)) ...
                             +  169 * (Aircraft.Weight.baggage + Aircraft.Weight.person) ...   % 169 aisle passengers
-                        * (Aircraft.Fuselage.length_nc + Aircraft.Fuselage.length_cabin/2);
+                        * (Aircraft.Fuselage.length_nc + 0.53*Aircraft.Fuselage.length_cabin);
 
 Aircraft.cg.op_wind_mid_ais = Aircraft.cg.op_wind_mid_ais/( Aircraft.Weight.op_empty_weight +  ...
                         400 * (Aircraft.Weight.baggage + Aircraft.Weight.person) );         
@@ -75,7 +75,7 @@ Aircraft.cg.op_fuel = Aircraft.cg.op_fuel/(Aircraft.Weight.op_empty_weight + 0.9
 %% Calculating cg of Operating Empty Weight + Fuel + Passengers + Baggage of plane (Behind the CG) (from nose in ft)
 Aircraft.cg.op_fuel_pass_bag = Aircraft.cg.op_fuel * (Aircraft.Weight.op_empty_weight + 0.99 * Aircraft.Weight.fuel_Weight) ...
                         + 190 * Aircraft.Weight.person * (Aircraft.Fuselage.length_nc + 0.625*Aircraft.Fuselage.length_cabin) ...
-                        + 190 * Aircraft.Weight.baggage * (Aircraft.Fuselage.length_nc + 0.5*Aircraft.Fuselage.length_cabin);
+                        + 190 * Aircraft.Weight.baggage * (Aircraft.Fuselage.length_nc + 0.53*Aircraft.Fuselage.length_cabin);
                 
 Aircraft.cg.op_fuel_pass_bag = Aircraft.cg.op_fuel_pass_bag/( Aircraft.Weight.op_empty_weight + ...
                           190 * (Aircraft.Weight.baggage + Aircraft.Weight.person) ...
@@ -85,7 +85,7 @@ Aircraft.cg.op_fuel_pass_bag = Aircraft.cg.op_fuel_pass_bag/( Aircraft.Weight.op
 Aircraft.cg.MTOW = Aircraft.cg.fuel * 0.99 * Aircraft.Weight.fuel_Weight ...
                  + (Aircraft.Passenger.business +  Aircraft.Passenger.economy) ...
                  * (Aircraft.Weight.baggage + Aircraft.Weight.person) ...
-                 * (Aircraft.Fuselage.length_nc + Aircraft.Fuselage.length_cabin/2) ...
+                 * (Aircraft.Fuselage.length_nc + 0.53*Aircraft.Fuselage.length_cabin) ...
                  + Aircraft.cg.op_empty_weight * Aircraft.Weight.op_empty_weight;
              
 Aircraft.cg.MTOW = Aircraft.cg.MTOW/Aircraft.Weight.MTOW;             
@@ -104,7 +104,7 @@ function Aircraft = fuselage_cg(Aircraft)
 %     Aircraft.cg.fuselage = ( Aircraft.Fuselage.length/fuselage_fineness_ratio )*( nosecone_fineness_ratio ... 
 %         + (fuselage_fineness_ratio - 5)/1.8 );
 
-      Aircraft.cg.fuselage = 0.435*Aircraft.Fuselage.length;  
+      Aircraft.cg.fuselage = 0.45*Aircraft.Fuselage.length;  
     
 end
 %% Vertical Tail CG Estimation
