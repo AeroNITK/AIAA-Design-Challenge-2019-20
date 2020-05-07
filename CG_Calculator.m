@@ -123,6 +123,7 @@ function Aircraft = wing_cg(Aircraft)
     % 114.394 is from cad sketch. Calculated from vertical tail moment arm.
     
     Aircraft.Wing.root_chord_pos = 79.734;    % From nose (in ft). From cad sketch
+    Aircraft.Wing.wing_box_chord_pos = 87.927;    % From nose (in ft). From CAD Sketch
     Aircraft.Wing.Y = 25.896;   % From cad sketch
 
 end
