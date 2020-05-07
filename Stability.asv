@@ -79,15 +79,10 @@ Aircraft.Stability.Cn_beta = Aircraft.Stability.Cn_beta_wing_fuse + Aircraft.Sta
 Aircraft.Stability.Cl_beta_fuse = 0.0006 / d2r; % Fuselage Contribution to Lateral Moment (NPTEL FD - II)
 
 Aircraft.Stability.Cl_beta_wing = -0.25 * Aircraft.Wing.Dihedral * d2r * Wing_lift_slope ...
-                    * ( 2*(1 + 2*Aircraft.Wing.taper_ratio) / 3*(1 + Aircraft.Wing.taper_ratio) );  % Cl_beta due to wing dihedral
+                    * ( 2*(1 + 2*Aircraft.Wing.taper_ratio) / 3*(1 + Aircraft.Wing.taper_ratio) );
                 
-Aircraft.Stability.Cl_beta_wing = Aircraft.Stability.Cl_beta_wing - 0.4052 * sin( d2r * 2 * Aircraft.Wing.Sweep_LE) ...
-                                    * Aircraft.Wing.Y / Aircraft.Wing.b;    % Cl_beta due to wing sweep   
-                                
-Aircraft.Stability.Cl_beta_vtail = - 0.95 * Aircraft.Tail.Vertical.S * 23.54 * Aircraft.Tail.Vertical.lift_slope ...
-                                / Aircraft.Wing.S / Aircraft.Wing.b ;    % Cl_beta due to Vertical Tail                                 
+Aircraft.Stability.Cl_beta_wing = Aircraft.Stability.Cl_beta_wing - 0.4052 * sin( d2r * 2 )                
 
-Aircraft.Stability.Cl_beta =  Aircraft.Stability.Cl_beta_wing + Aircraft.Stability.Cl_beta_fuse ...
-                                + Aircraft.Stability.Cl_beta_vtail;
+Aircraft.Stability.Cl_beta =  Aircraft.Stability.Cl_beta_wing + Aircraft.Stability.Cl_beta_fuse;
 
 save('Aircraft.mat','Aircraft','-append');
