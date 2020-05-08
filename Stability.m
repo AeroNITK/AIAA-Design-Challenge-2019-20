@@ -91,3 +91,6 @@ Aircraft.Stability.Cl_beta =  Aircraft.Stability.Cl_beta_wing + Aircraft.Stabili
                                 + Aircraft.Stability.Cl_beta_vtail;
 
 save('Aircraft.mat','Aircraft','-append');
+
+clear;
+clc;
