@@ -56,8 +56,13 @@ Aircraft.Propulsion.BPR = 5;
 
 % In SI units i.e in 1/hr
 
-SFC_maxT = 0.67 * exp(-0.12 * Aircraft.Propulsion.BPR); % Raymer Eq.10.7
-SFC_cruise = 0.88 * exp(-0.05 * Aircraft.Propulsion.BPR); %Raymer Eq.10.9
+% SFC_maxT = 0.67 * exp(-0.12 * Aircraft.Propulsion.BPR); % Raymer Eq.10.7
+% SFC_cruise = 0.88 * exp(-0.05 * Aircraft.Propulsion.BPR); %Raymer Eq.10.9
+
+% SFC values are based on recommendation of Raymer (20% improvement) Base
+% values are taken from Raymer Part 1.
+Aircraft.Propulsion.SFC_cruise = 0.55*0.8;  % in 1/hr
+Aircraft.Propulsion.SFC_loiter = 0.45*0.8;  % in 1/hr
 
 %% Nacelle Geometry
 % Refer A330 AIRCRAFT CHARACTERISTICS - AIRPORT AND MAINTENANCE PLANNING Report
@@ -83,15 +88,21 @@ Aircraft.Propulsion.Exhaust_nozzle = ( Exhaustnozzle_original/20.24 ) * Aircraft
 
 %% Inlet Geometry
 
-k_gas = 0.0011; % Roskam Eq.6.20, based on BPR
-m_gas = k_gas * Aircraft.Propulsion.thrust_per_engine;  % (in slugs/sec)
-m_cool = 0.06 * m_gas;  % Roskam Eq. 6.21
-m_air = m_gas + m_cool; % Roskam Eq. 6.19
+% Mass Flow Rate calculation from Roskam
+% k_gas = 0.0011; % Roskam Part 6 Eq.6.20, based on BPR
+% m_gas = k_gas * Aircraft.Propulsion.thrust_per_engine;  % (in slugs/sec)
+% m_cool = 0.06 * m_gas;  % Roskam Part 6 Eq. 6.21
+% m_air = m_gas + m_cool; % Roskam Part 6 Eq. 6.19
 
-Vmax = 250.8; % in meter per sec. for altitude 40,000 ft and mach 0.85
-density = 0.302;  %%atmospheric density at 40,000 ft in kg/cubic meter
+% Capture area & Mass Flow Rate calculation from Raymer (Pg. No. 300)
 
-Ac = (m_air/(density*Vmax));  % Capture area as per Roskam Eq.6.22 (in ft^2)
+Aircraft.Propulsion.mass_flow_rate = 26 * Aircraft.Propulsion.Engine_diameter^2; % (in lbs/s)
+
+Cap_area_by_mass_flow = 0.0251;  % From Raymer (Fig 10.17) (sq ft)/(lbs per s)
+
+Aircraft.Propulsion.Cap_area = 0.0251 * Aircraft.Propulsion.mass_flow_rate;  % Capture area by Raymer (in ft^2)
+
+Aircraft.Propulsion.inlet_dia = sqrt(Aircraft.Propulsion.Cap_area * 4 / pi);   % Diameter at the start of inlet (in ft)
 
 save('Aircraft.mat','Aircraft','-append');
 
