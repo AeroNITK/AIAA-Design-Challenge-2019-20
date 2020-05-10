@@ -56,17 +56,17 @@ function Aircraft = Sizing(Aircraft)
         
         Aircraft.Wing.So = (Aircraft.Wing.b/2 - Aircraft.Wing.yb)*(Aircraft.Wing.cb + Aircraft.Wing.chord_tip);
         
-        mac_i = 2*Aircraft.Wing.chord_root*(1 + lamda_i + lamda_i^2)/(3*(1 + lamda_i));
+        Aircraft.Wing.mac_i = 2*Aircraft.Wing.chord_root*(1 + lamda_i + lamda_i^2)/(3*(1 + lamda_i));
         
-        mac_o = 2*Aircraft.Wing.cb*(1 + lamda_o + lamda_o^2)/(3*(1 + lamda_o));
+        Aircraft.Wing.mac_o = 2*Aircraft.Wing.cb*(1 + lamda_o + lamda_o^2)/(3*(1 + lamda_o));
         
-        yi = (Aircraft.Wing.yb/3)*(1 + 2*lamda_i)/(1 + lamda_i);
+        Aircraft.Wing.yi = (Aircraft.Wing.yb/3)*(1 + 2*lamda_i)/(1 + lamda_i);
         
-        yo = ( (Aircraft.Wing.b/2 - Aircraft.Wing.yb)/3 )*(1 + 2*lamda_o)/(1 + lamda_o);
+        Aircraft.Wing.yo = ( (Aircraft.Wing.b/2 - Aircraft.Wing.yb)/3 )*(1 + 2*lamda_o)/(1 + lamda_o);
         
-        Aircraft.Wing.mac = (Aircraft.Wing.Si*mac_i + Aircraft.Wing.So*mac_o)/Aircraft.Wing.S;
+        Aircraft.Wing.mac = (Aircraft.Wing.Si*Aircraft.Wing.mac_i + Aircraft.Wing.So*Aircraft.Wing.mac_o)/Aircraft.Wing.S;
         
-        Aircraft.Wing.Y = (Aircraft.Wing.Si*yi + Aircraft.Wing.So*(Aircraft.Wing.yb + yo))/Aircraft.Wing.S;
+        Aircraft.Wing.Y = (Aircraft.Wing.Si*Aircraft.Wing.yi + Aircraft.Wing.So*(Aircraft.Wing.yb + Aircraft.Wing.yo))/Aircraft.Wing.S;
 
 %         Aircraft.Wing.chord_root = 2*Aircraft.Wing.S/(Aircraft.Wing.b*(1 + Aircraft.Wing.taper_ratio));
 %             

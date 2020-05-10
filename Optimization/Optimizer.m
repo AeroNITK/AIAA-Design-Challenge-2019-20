@@ -7,6 +7,8 @@ close all
 global Aircraft
 Aircraft = struct();
 
+d2r = pi/180;
+
 LB = [0.2,25,0.11,0.7,34000,0.2,7,3000];  % Lower Bound
 UB = [0.6,35,0.15,0.85,40000,0.3,10,4100]; % Upper Bound
 
@@ -22,6 +24,11 @@ options = optimoptions('fmincon','Algorithm','sqp','Display','iter-detailed',...
     'StepTolerance',1e-20,'MaxFunctionEvaluations',600);
  
 [X,~,exitflag] = fmincon(@(x) Obj_Func(x), x0, A, B, Aeq, Beq, LB, UB, @(x) Nonlincon(x),options);
+
+Aircraft.Performance.Mdd = Aircraft.Performance.M_cruise + 0.04;
+Aircraft.Performance.Mcr = 0.95/cos( d2r * Aircraft.Wing.Sweep_hc)  ...
+                    - Aircraft.Wing.t_c_root/(cos(d2r*Aircraft.Wing.Sweep_hc)^2) ...
+                    - Aircraft.Performance.CL_Design/(10*cos(d2r*Aircraft.Wing.Sweep_hc)^3) - 0.108;
 
 %% Plotting
 x1 = 0.1:0.005:0.6; % T/W
