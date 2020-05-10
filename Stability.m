@@ -10,7 +10,7 @@ load('Aircraft.mat');
 
 %% Pitching Moment & Static Margin Calculation
 
-Wing_lift_slope = 4; % Wing lift curve slope (in 1/rad)
+Wing_lift_slope = Aircraft.Lift.lift_slope_M082; % Wing lift curve slope (in 1/rad)
 h = 0.297;  % Most aft CG ( fraction of Mean Aerodynamic Chord)
 h_ac = 0.25;    % Mean Aerodynamic Center ( fraction of Mean Aerodynamic Chord)
 
@@ -21,7 +21,7 @@ Aircraft.Stability.Cm_alpha_f = ( (pi/2) * (1 - 2 * Aircraft.Fuselage.diameter /
             / Aircraft.Wing.S / Aircraft.Wing.mac);  % Pitching Moment slope for Fuselage
 
 beta = sqrt(1 - Aircraft.Performance.M_cruise^2);
-k = 6.875/2/pi; 
+k = 7.16/2/pi; 
         
 Aircraft.Tail.Horizontal.Sweep_maxtc = atan( tan(d2r*Aircraft.Tail.Horizontal.Sweep_LE) ...   % Sweepback angle of Maximum Thickness Chord
                             - ( 4*0.3*(1 - Aircraft.Tail.Horizontal.taper_ratio) ) ...
@@ -64,8 +64,6 @@ Aircraft.Stability.Cn_beta_wing_fuse = Aircraft.Stability.Cn_beta_wing_fuse / d2
 Aircraft.Tail.Vertical.lift_slope = 2*pi*Aircraft.Tail.Vertical.Aspect_Ratio ...
                     / ( 2 + ( (Aircraft.Tail.Vertical.Aspect_Ratio*beta/k)^2 ...
                     * ( 1 + ( tan(d2r*Aircraft.Tail.Vertical.Sweep_hc)/beta)^2 ) + 4 )^0.5 );
-
-% Aircraft.Tail.Vertical.lift_slope = 6.875 / (1 + 6.875/pi/Aircraft.Tail.Vertical.Aspect_Ratio);
                 
 Factor = 0.724 + 3.06 * Aircraft.Tail.Vertical.S / Aircraft.Wing.S / ( 1 + cos(d2r * Aircraft.Wing.Sweep_qc) ) ...
         + 0.4 * 8 / Aircraft.Fuselage.diameter + 0.009 * Aircraft.Wing.Aspect_Ratio;    % Factor for V Tail Effectiveness and Sidewash                
