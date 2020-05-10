@@ -68,7 +68,7 @@ Aircraft.Propulsion.SFC_loiter = 0.45*0.8;  % in 1/hr
 % Refer A330 AIRCRAFT CHARACTERISTICS - AIRPORT AND MAINTENANCE PLANNING Report
 % For engine length of 14.07 ft, length of nacelle is 20.24 ft
 
-NSF = 14.07/20.24;    % Nacelle Scaling Factor
+NSF = 20.24 / 14.07;    % Nacelle Scaling Factor
 Aircraft.Propulsion.Nacelle_L = NSF * Aircraft.Propulsion.Engine_length;   % New Nacelle Length (in ft)
  
 Intake_cowl_original = 3.25;    % (in ft)  
