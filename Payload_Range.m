@@ -103,5 +103,13 @@ x = [range,range1];
 y = [payload_weight,0];
 
 plot(x,y);
+text(0,Aircraft.Weight.payload+3000,'A');
+text(Aircraft.Performance.range1,Aircraft.Weight.payload+3000,'B');
+text(range,payload_weight+3000,'C');
+text(range1,3000,'D');
+
+title('Payload Range Diagram');
+xlabel('Range(nm)');
+ylabel('Payload (lbs)');
 
 hold off
