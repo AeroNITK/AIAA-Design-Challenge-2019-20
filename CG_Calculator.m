@@ -93,7 +93,7 @@ Aircraft.cg.MTOW = Aircraft.cg.MTOW/Aircraft.Weight.MTOW;
 %% Plotting CG travel
 plotting(Aircraft)
 
-save('Aircraft');
+% save('Aircraft');
 
 %% Fuselage CG Estimation
 function Aircraft = fuselage_cg(Aircraft)
@@ -104,7 +104,7 @@ function Aircraft = fuselage_cg(Aircraft)
 %     Aircraft.cg.fuselage = ( Aircraft.Fuselage.length/fuselage_fineness_ratio )*( nosecone_fineness_ratio ... 
 %         + (fuselage_fineness_ratio - 5)/1.8 );
 
-      Aircraft.cg.fuselage = 0.45*Aircraft.Fuselage.length;  
+      Aircraft.cg.fuselage = 0.435*Aircraft.Fuselage.length;  
     
 end
 %% Vertical Tail CG Estimation
@@ -139,7 +139,7 @@ end
 %% Propulsion CG Estimation
 function Aircraft = propulsion_cg(Aircraft)
 
-    Aircraft.cg.propulsion = Aircraft.Fuselage.length - 140.109;%- 150.715;%- 143.225;  
+    Aircraft.cg.propulsion = Aircraft.Fuselage.length - 133.126;%- 150.715;%- 143.225;  
     % 140.109 is from cad sketch.
 
 end
