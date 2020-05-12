@@ -1,9 +1,9 @@
 function []=Vn()
-Vs1=211.847
-Va=334.959
-Vc=505.471
-Vd=631.838
-Vs1neg=261.096
+Vs1=267.392
+Va=422.7839
+Vc=484.692
+Vd=605.865
+Vs1neg=283.0499
 
 nneg=-1.0
 npos1=1.0
@@ -48,12 +48,12 @@ xf=Vd*ones(size(yh))
 
 ax=gca
 hold on
-plot(x1,y1,x2,y2,x3,y3,x4,y4,x5,y5,x6,y6)
+plot(x1,y1,'k',x2,y2,'k',x3,y3,'k',x4,y4,'k',x5,y5,'k',x6,y6,'k')
 plot(xa,ya,'k',xa,yb,'--',xa,yc,'--',xb,yd,'--',xc,ye,'--',xd,yf,'--',xe,yg,'--',xf,yh,'--')
 hold off
 xlim([0 800])
-ax.XTick=[0 Vs1 Va Vc Vd 800]
-ax.YTick=[-1.0 0 1.0 2.5]
+ax.XTick=[0 100 200 Vs1 300 375 Va Vc 550 Vd 800]
+ax.YTick=[-3.0 -2.0 -1.0 0 1.0 2.0 2.5 3.0]
 ylim([-3 5])
 title('V-n Diagram')
 xlabel('Speed V in KEAS')

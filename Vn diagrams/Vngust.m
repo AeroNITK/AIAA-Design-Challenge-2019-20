@@ -1,10 +1,10 @@
 c=1.0
-mVb=0.004553
-mVc=0.003283
-mVd=0.001641
-Vb=460.9783
-Vc=505.4711
-Vd=631.8389
+mVb=0.005212
+mVc=0.003759
+mVd=0.001878
+Vb=458.3313
+Vc=484.692
+Vd=605.865
 
 B1=c+mVb*Vb
 C1=c+mVc*Vc
@@ -59,10 +59,10 @@ hold off
 ax=gca
 xlim([0 800])
 ylim([-3 5])
-ax.XTick=[0 Vb Vc Vd]
-ax.YTick=[-1.0 0 1.0]
+ax.XTick=[0 100 200 300 400 Vb Vc 550 Vd]
+ax.YTick=[-3.0 -2.0 -1.0 0 1.0 2.0 3.0 4.0 5.0]
 title('V-n Gust Diagram')
 xlabel('Speed V in KEAS')
 ylabel('Load Factor n')
 str={'Vb','Vc','Vd','Vb speed','Vc speed','Vd speed','Vb speed','Vc speed','Vd speed'}
-text([Vb Vc Vd Vb/4 Vc/2 Vd/2+50 Vb/4 Vc/2+20 Vd/2+50 ],[0 0 0 1.8 1.9 1.7 0.3 0 -0.2],str)
+text([Vb Vc Vd Vb/4 Vc/2 Vd/2+50 Vb/4 Vc/2+20 Vd/2+50 ],[0 0 0 1.8 1.9 1.7 0.3 0 0.4],str)
