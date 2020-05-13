@@ -29,7 +29,7 @@ r2d = 180/pi;
 
     plot(0,0.4,'p','MarkerSize',10,'MarkerEdgeColor','r','MarkerFaceColor',[0.5,0.5,0.5]);
 
-    plot(xhline,hline,'--','LineWidth',1.5);
+    plot(xhline,hline,'r--','LineWidth',1.5);
 
     legend('Lift Curve','Design C_L','C_L max line','Location','Northwest');
     
@@ -123,10 +123,10 @@ r2d = 180/pi;
     plot(txline,tyline,'--','LineWidth',1.5);
     
     txline = [0,0.15,0.3];
-    tyline = [0,1.35,2.7];
+    tyline = [0,1.33,2.66];
     
     plot(txline,tyline,'--','LineWidth',1.5);
     
-    legend('Cruise','Tangent Line','Landing','Take-Off','Tangent Line Landing');
+    legend('Cruise','Tangent Line','Landing','Take-Off','Tangent Line Landing','Tangent Line Landing');
     
 

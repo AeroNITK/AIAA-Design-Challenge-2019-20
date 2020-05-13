@@ -23,16 +23,20 @@ options = optimoptions('fmincon','Algorithm','sqp','Display','iter-detailed',...
     'FunctionTolerance',1e-6,'OptimalityTolerance',1e-6,'ConstraintTolerance',1e-6,....
     'StepTolerance',1e-20,'MaxFunctionEvaluations',600);
  
-[X,~,exitflag] = fmincon(@(x) Obj_Func(x), x0, A, B, Aeq, Beq, LB, UB, @(x) Nonlincon(x),options);
+[X,~,exitflag,output] = fmincon(@(x) Obj_Func(x), x0, A, B, Aeq, Beq, LB, UB, @(x) Nonlincon(x),options);
 
 Aircraft.Performance.Mdd = Aircraft.Performance.M_cruise + 0.04;
 Aircraft.Performance.Mcr = 0.95/cos( d2r * Aircraft.Wing.Sweep_hc)  ...
                     - Aircraft.Wing.t_c_root/(cos(d2r*Aircraft.Wing.Sweep_hc)^2) ...
                     - Aircraft.Performance.CL_Design/(10*cos(d2r*Aircraft.Wing.Sweep_hc)^3) - 0.108;
+                
+hold off;
 
 %% Plotting
 x1 = 0.1:0.005:0.6; % T/W
 x2 = 50:1.1:160;    % Wing loading
+
+figure(2);
 
 R = 287;
 S_TOFL = Aircraft.Performance.takeoff_runway_length; % Take-off field length in feets
@@ -91,11 +95,12 @@ end
 
 plot(x,y,'LineWidth',1.5);
 
-plot(Aircraft.Performance.WbyS,Aircraft.Performance.TbyW,'o');
+plot(Aircraft.Performance.WbyS,Aircraft.Performance.TbyW,'-p','MarkerFaceColor','red',...
+    'MarkerSize',15);
 
 hold off
 
 title('Constraint Diagram');
 ylabel('T/W');
 xlabel('W/S (lbs/ft^2)');
-legend ('Takeoff','Landing','Climb','Cruising Speed and Altitude');
+legend ('Takeoff','Landing','Climb','Cruising Speed and Altitude','Final Point','Location','northwest');

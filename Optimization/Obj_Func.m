@@ -35,5 +35,5 @@ function value = Obj_Func(x)
     end
     
     value = Aircraft.Weight.MTOW;
-
+   
 end

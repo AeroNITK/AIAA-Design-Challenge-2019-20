@@ -13,7 +13,6 @@ Aircraft = fuselage_cg(Aircraft);
 Aircraft = vertical_tail_cg(Aircraft);
 Aircraft = wing_cg(Aircraft);
 Aircraft = horizontal_tail_cg(Aircraft);
-Aircraft = propulsion_cg(Aircraft);
 Aircraft = NLG_cg(Aircraft);
 Aircraft = MLG_cg(Aircraft);
 Aircraft = fixed_equip_cg(Aircraft);
@@ -198,15 +197,19 @@ function plotting(Aircraft)
     
     hold on
     
-    plot(Xoe,Aircraft.Weight.op_empty_weight,'h','MarkerSize',8,'MarkerFaceColor','m');  
+    plot(Xoe,Aircraft.Weight.op_empty_weight,'x','MarkerSize',8);  
     
-    plot(Xoe_wind, Aircraft.Weight.op_empty_weight + 84 * (Aircraft.Weight.baggage + Aircraft.Weight.person),'s','MarkerSize',8,'MarkerFaceColor','b');
-    plot(Xoe_wind_mid, Aircraft.Weight.op_empty_weight + 231 * (Aircraft.Weight.baggage + Aircraft.Weight.person),'^','MarkerSize',8,'MarkerFaceColor','r');
-    plot(Xoe_wind_mid_ais, Aircraft.Weight.op_empty_weight + 400 * (Aircraft.Weight.baggage + Aircraft.Weight.person),'>','MarkerSize',8,'MarkerFaceColor','m');
-    plot(Xoe_fuel,Aircraft.Weight.op_empty_weight + 0.99 * Aircraft.Weight.fuel_Weight,'d','MarkerSize',8,'MarkerFaceColor','b');
+    plot(Xoe_wind, Aircraft.Weight.op_empty_weight + 84 * (Aircraft.Weight.baggage + Aircraft.Weight.person),'s','MarkerSize',8);
+    plot(Xoe_wind_mid, Aircraft.Weight.op_empty_weight + 231 * (Aircraft.Weight.baggage + Aircraft.Weight.person),'^','MarkerSize',8);
+    plot(Xoe_wind_mid_ais, Aircraft.Weight.op_empty_weight + 400 * (Aircraft.Weight.baggage + Aircraft.Weight.person),'*','MarkerSize',8);
+    plot(Xoe_fuel,Aircraft.Weight.op_empty_weight + 0.99 * Aircraft.Weight.fuel_Weight,'d','MarkerSize',8);
     plot(Xoe_fuel_pass_bag, Aircraft.Weight.op_empty_weight + 190*(Aircraft.Weight.baggage + Aircraft.Weight.person) ...
-                            + 0.99 * Aircraft.Weight.fuel_Weight,'p','MarkerSize',8,'MarkerFaceColor','r');
-    plot(Xmtow,Aircraft.Weight.MTOW,'<','MarkerSize',8,'MarkerFaceColor','m');
+                            + 0.99 * Aircraft.Weight.fuel_Weight,'p','MarkerSize',8);
+    plot(Xmtow,Aircraft.Weight.MTOW,'+','MarkerSize',8);
+    
+    legend('Empty Weight','Opt Empty Weight','Window Passenger + Baggage', ...
+            'Middle Passenger + Baggage','Aisle Passenger + Baggage','Fuel', ...
+            'Fully Aft loaded','MTOW','Location','southeast');
     
     x = [Xe,Xoe];
     y = [Aircraft.Weight.empty_Weight,Aircraft.Weight.op_empty_weight];
@@ -230,10 +233,6 @@ function plotting(Aircraft)
         Aircraft.Weight.MTOW];
     
     plot(x,y,'k--','LineWidth',1.5);
-    
-        legend('Empty Weight','Opt Empty Weight','Window Passenger + Baggage', ...
-            'Middle Passenger + Baggage','Aisle Passenger + Baggage','Fuel', ...
-            'Fully Aft loaded','MTOW','Location','southeast','Mandatory Path','Loading Path 1','Loading Path 2');
     
     hold off
     
