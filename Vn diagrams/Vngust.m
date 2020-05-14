@@ -52,17 +52,23 @@ xA=X:0.1:Vb
 yA1=M*(xA.^2)
 yA2=-mVb*xA+c
 hold on
+plot(xb,yb,'--y',xc,yc,'--m',xd,yd,'--c',xb,yb2,'--r',xc,yc2,'--g',xd,yd2,'--b',xb,yp,'--k',xv1,yv1,'--k',xv2,yv2,'--k')
+legend({'V_{b} Speed','V_{c} Speed','V_{d} Speed','V_{b} Speed','V_{c} Speed','V_{d} Speed'},'Location','southeast','Orientation','vertical')
 plot(xa,ya,'k')
-plot(xb,yb,'--',xc,yc,'--',xd,yd,'--',xb,yb2,'--',xc,yc2,'--',xd,yd2,'--',xb,yp,'--',xv1,yv1,'--',xv2,yv2,'--')
 plot(xA,yA1,'k',xA,yA2,'k',xD,yD,'k',xbc,yB1,'k',xcd,yC1,'k',xbc,yB2,'k',xcd,yC2,'k')
+set(findall(gca, 'Type', 'Line'),'LineWidth',1.2);
 hold off
 ax=gca
 xlim([0 800])
 ylim([-3 5])
-ax.XTick=[0 100 200 300 400 Vb Vc 550 Vd]
+ax.XTick=[0 100 200 300 400 500 600 700 800]
 ax.YTick=[-3.0 -2.0 -1.0 0 1.0 2.0 3.0 4.0 5.0]
+ax.FontSize = 13
 title('V-n Gust Diagram')
 xlabel('Speed V in KEAS')
 ylabel('Load Factor n')
-str={'Vb','Vc','Vd','Vb speed','Vc speed','Vd speed','Vb speed','Vc speed','Vd speed'}
-text([Vb Vc Vd Vb/4 Vc/2 Vd/2+50 Vb/4 Vc/2+20 Vd/2+50 ],[0 0 0 1.8 1.9 1.7 0.3 0 0.4],str)
+str={'V_{b}','V_{c}','V_{d}'}
+text([Vb Vc Vd ],[0.3 0.3 0.2],str,'FontSize',13)
+dim = [.8 .5 .3 .3];
+str = {'V_{b} = 458.33','V_{c} = 484.69','V_{d} = 605.86'}
+annotation('textbox',dim,'String',str,'FitBoxToText','on')
